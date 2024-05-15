@@ -1,5 +1,6 @@
 
-<pre>
+<div style="text-align: center;">
+  <pre>
           _____                   _______                   _____
          /\    \                 /::\    \                 /\    \
         /::\    \               /::::\    \               /::\    \
@@ -21,6 +22,7 @@
         /:::/    /               \::/____/               \::::/    /
         \::/    /                 ~~                      \::/    /
          \/____/                                           \/____/
-<pre>
+</pre>
 
 PID: FiO9kYgUd23XFM4HbojgBVYHHmvE3i3Z0wFHMbtJ7RM
+</div>
