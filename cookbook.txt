@@ -1,0 +1,3011 @@
+Welcome to ao
+ao logo
+
+The ao computer is a world where countless parallel processes interact within a single, cohesive computing environment, seamlessly interlinked through a native message-passing layer. It is a burgeoning ecosystem of decentralized programs, akin to the World Wide Web, where each process, like a website, operates independently yet is intricately woven into a unified experience.
+
+ao + aos: The rocket and your rocket fuel.
+Typically when you use ao, you will interact with it through its operating system: aos.
+
+aos is an abstraction layer that runs in your processes, making it easy to use the full functionality of the ao computer. In this cookbook, you will learn everything you need to know about getting started with the ao computer using aos.
+
+Specs
+If you would like to learn more about the technical specifications of ao, please check out its spec for detailed analysis.
+
+Next Steps
+In the tutorials that follow, we will explore ao and build everything from chatrooms to autonomous, decentralized bots.
+
+Let's jump into it! 🚀
+
+Joining ao's native community chat
+The ao network hosts a number of chat servers that allow you to converse with other devs, right from your aos console. To load the chat client run the following:
+
+lua
+aos> .load-blueprint chat
+To show the available rooms you can run:
+
+lua
+aos> List()
+You can join a room and start chatting with other devs as follows:
+
+lua
+aos> Join("Getting-Started", "yourName")
+aos> Say("Hi")
+
+CRED and Quests FAQ
+INFO
+
+The ao ecosystem is in a very early stage and full of opportunity. There is a community quest board full of ways that you can get involved testing and building software to grow the ecosystem, all while earning its native currency: CRED.
+
+Video Tutorial
+
+What is CRED?
+CRED is the native currency of the ao testnet. It is awarded to those who complete quests.
+
+What is CRED good for?
+The CRED token is a digital representation of a person's social cred.
+
+whomstsoever has the most CRED is, undeniably, the coolest, most trustworthy person
+
+-Bobinstein (bobinstein), via Discord
+
+the future [of CRED] has not yet been determined...
+
+-Ros (rosmcmahon), via Discord
+
+How do I earn CRED?
+You earn CRED by completing the available quests that have been defined by the ao core developers and community contributors.
+
+What quests are available?
+There is a dev chat room within ao localnet which you can query for quest information. First, launch aos:
+
+sh
+$ aos
+Next, join the Quests chatroom, if you haven't done so already. You can optionally provide your screenname/handle as the second parameter
+
+lua
+aos> Join("Quests")
+# OR
+aos> Join("Quests", "MyScreenName")
+Then you can send the /Quests slash command to that chatroom. In case you have joined multiple chatrooms, the second parameter sends the message to only one specific chatroom, by name.
+
+lua
+aos> Say("/Quests")
+# OR
+aos> Say("/Quests", "Quests")
+After a few seconds, a bot will respond by broadcasting the list of available quests to the chatroom.
+
+How do I view the detailed quest description?
+You can learn more about the details of a specific quest, by sending a /Quests:[index] slash command into the Quests chatroom, where [index] should be replaced with the quest number, for example:
+
+lua
+aos> Say("/Quests:1", "Quests")
+# OR
+aos> Say("/Quests:2", "Quests")
+Quest 1: "Begin"
+The detailed steps for Quest 1 are available in the Begin tutorial in this cookbook.
+
+Quest 2: "Bots-and-Games"
+The detailed steps for Quest 2 are available in the Bots and Games tutorial in this cookbook.
+
+How do I complete a quest?
+Follow all the steps in the quest description, including submitting the claim.
+
+How do I get my CRED?
+The text description of each quest will provide you details on how to submit the claim request. After you fully complete a quest, be sure to submit the claim as instructed in the quest description. You must complete all the steps of the quest and submit the claim request to receive your CRED. It will take some time to manually process your claim request.
+
+When do I get my CRED?
+Your request will be manually reveiewed to verify that you followed all of the necessary steps. Please allow ~24 hours on business days for your claim to be processed.
+
+How do I view/verify my current CRED balance?
+You can load the credUtils blueprint into your ao process to quickly query for your CRED balance, and even send CRED to a friend!
+
+lua
+aos> .load-blueprint credUtils
+Loading...  credUtils                                        # sample output
+undefined                                                    # sample output
+aos> CRED.balance
+Your CRED balance has not been checked yet. Updating now.    # sample output
+CRED Balance updated: 500.000                                # sample output
+Read more about aos blueprints.
+
+Tutorials
+Here, we've created a series of tutorials to help you get started with aos and build your first processes. These tutorials include interactive guides, code snippets, and examples to help you get comfortable with the aos environment.
+
+List of Tutorials
+Getting Started - An Interactive Guide
+
+Bots and Games
+
+Begin: An Interactive Tutorial
+In this tutorial series, you'll walk through an interactive steps that will help you deepen your knowledge and understanding of the aos environment.
+
+INFO
+
+The Exercise
+In this fun exercise, you'll encounter a series of challenges presented by two familiar characters, Morpheus and Trinity. You'll dive deep into the rabbit hole guided by Morpheus as he presents you with a series of challenges to prove you're the one. Once you've completed all of the challenges presented by both Morpheus and Trinity, you'll receive a token that grants you access to an exclusive chatroom within ao called The Construct.
+
+Now, let's get started down the rabbit hole.White Rabbit
+
+Tutorials
+Getting Started - An Interactive Tutorial
+1. Quick Start
+2. Messaging
+3. Creating a Chatroom
+4. Build a Token
+
+Messaging in ao
+Learn how Messages gives ao Parallel Compute Capability
+In ao, every process runs in parallel, creating a highly scalable environment. Traditional direct function calls between processes aren't feasible because each process operates independently and asynchronously.
+
+Messaging addresses this by enabling asynchronous communication. Processes send and receive messages rather than directly invoking functions on each other. This method allows for flexible and efficient interaction, where processes can respond to messages, enhancing the system's scalability and responsiveness.
+
+We'll begin by exploring the basics of messaging in aos, how to see messages received in your inbox, and how to send messages to other processes.
+
+Video Tutorial
+
+Step 1: Understand the Message Structure
+Message Basics: Messages in ao are built using Lua tables, which are versatile data structures that can hold multiple values. Within these tables, the "Data" field is crucial as it contains the message's content or payload. This structure allows for efficient sending and receiving of information between processes, showcasing how ao primitives leverage Arweave's underlying capabilities to facilitate complex, composable operations.
+
+For detailed specifications, please refer to the original documentation on the G8way specs page.
+
+Example: { Data = "Hello from Process A!" } is a simple message.
+
+Step 2: Open the aos CLI
+Launch the aos command-line interface (CLI) by typing aos in your terminal and pressing Enter.
+sh
+aos
+Step 3: How to Send a Message
+lua
+Send({ Target = "process ID", Data = "Hello World!" })
+Send: The Send function is globally available in the aos interactive environment.
+Target: To send a message to a specific process, include a Target field in your message.
+Data: The Data is the text message you want received by the receiving process. In this example, the message is "Hello World!".
+Step 4: Store Morpheus's Process ID
+We'll use the process ID provided below and store it as a variable called Morpheus.
+
+lua
+wu_tAUDUveetQZpcN8UxHt51d9dyUkI4Z-MfQV8LnUU
+Copy the process ID above and store it as a variable by running the below command in the aos CLI:
+
+lua
+Morpheus = "wu_tAUDUveetQZpcN8UxHt51d9dyUkI4Z-MfQV8LnUU"
+This will store the process ID as a variable called Morpheus, making it easier to interact with the specific process ID.
+
+INFO
+
+When creating the Morpheus variable, the only response you should see is undefined. This is expected. To check if the variable was created successfully, type Morpheus and press Enter. You should see the process ID you stored.
+
+Check the Morpheus Variable
+lua
+-- Check the Morpheus variable by typing `Morpheus`
+ Morpheus
+-- Expected Results:
+wu_tAUDUveetQZpcN8UxHt51d9dyUkI4Z-MfQV8LnUU
+
+
+-- If `undefined` is returned,
+-- then the variable was not created successfully.
+Step 5: Send a Message to Morpheus
+After obtaining Morpheus's process ID and storing it in a variable, you're ready to communicate with it. To do this, you use the Send function. Morpheus, himself, is a parallel process running in ao. He receives and sends messages using a series of Handlers. Let's send him a message and see what happens.
+
+lua
+Send({ Target = Morpheus, Data = "Morpheus?" })
+Your Target is Morpheus which is the variable we defined earlier using Morpheus's process ID.
+The Data is the message you want to send to Morpheus. In this case, it's "Morpheus?".
+Expected Results:
+
+lua
+-- Your Message Command
+ Send({ Target = Morpheus, Data = "Morpheus?"})
+-- Message is added to the outbox
+message added to outbox
+-- A New Message is received from `Morpheus`'s process ID
+New Message From BWM...ulw: Data = I am here. You are f
+You've sent a message to Morpheus and received a response, but you can't read the full message. Let's learn about the Inbox and how to read messages.
+
+Step 6: The Inbox
+The Inbox is where you receive messages from other processes.
+
+INFO
+
+To see an in depth view of an inbox message, head over to the Messages Concepts page.
+
+Let's check your inbox to see how many messages you have received.
+
+Inside your aos CLI, type the following command:
+
+lua
+ #Inbox
+If you're actively following through the tutorial, the inbox will not have many messages. However, if you've been experimenting with the aos environment, you may more than 1 message in your inbox.
+
+Example Return:
+
+lua
+-- Your Inbox Command
+ #Inbox
+-- The command will return the number of messages in your inbox.
+4
+In the example above, the return is 4, stating that there are four messages in the inbox.
+
+As we're actively looking for Morpheus's response, we'll assume his message was the last one received. To read the last message in your inbox, type the following command:
+
+lua
+ Inbox[#Inbox].Data
+This command allows you to isolate the Data from the message and only read the contents of the data.
+
+The Expected Return:
+
+lua
+-- Your Inbox[x].Data Command
+ Inbox[#Inbox].Data
+-- The command will return the `Data` of the message.
+-- Data is what usually represents the text-based message
+-- received from one process to another.
+I am here. You are finally awake. Are you ready to see how far the rabbit hole goes?
+You are now using your own process to communicate with Morpheus, another parallel process running in ao. You're now ready to move on to the next step in the tutorial.
+
+Step 7: Sending Messages with Tags
+Purpose of Tags: Tags in aos messages are used to categorize, route, and process messages efficiently. They play a crucial role in message handling, especially when dealing with multiple processes or complex workflows.
+
+Some processes use Handlers that specifically interact with messages that have certain tags. For example, a process may have a handler that only interacts with messages that have a specific tag, which we'll see an example of in the chatroom tutorial.
+
+How to Use Tags in Messages
+In the case of Morpheus, we can use tags to categorize our messages, and because Morpheus is a autonomous process, he has handlers that can interact with messages that have certain tags.
+
+Adding Tags to a Message:
+
+We already know that the Data of a message is the text-based message you want to send to another process. Earlier, we sent a message to Morpheus without any tags, in which he used a handler to respond to an exact matching data.
+Let's Show Morpheus That We're Ready
+Send Morpheus a message with the tag Action and the value rabbithole.
+
+Example:
+
+lua
+Send({ Target = Morpheus, Data = "Code: rabbithole", Action = "Unlock" })
+Expected Return:Morpheus Responds 2
+
+Additional Tips for Using Tags
+Consistent Tagging: Develop a consistent tagging system for your application to make message handling more predictable.
+Tag Naming: Choose clear and descriptive names for your tags. This makes it easier to understand the purpose and context of messages at a glance.
+Security with Tags: Remember that tags are not encrypted or hidden, so avoid using sensitive information as tags.
+Advanced Usage of Tags
+Workflow Management: Tags can be instrumental in managing workflows, especially in systems where messages pass through multiple stages or processes.
+Additional Tips for Messaging
+Message Structure: Explore other fields like Epoch, From, and Nonce for more complex messaging needs.
+Debugging: Use the Dump function to print messages for debugging.
+Security Considerations: Be cautious with the content and handling of messages, and never send anything considered private or sensitive.
+Conclusion
+You've now learned how to send messages with tags, which is a powerful tool for categorizing and routing messages in aos.
+
+Morpheus has officially invited you to the next stage of your journey. You're now ready to move on to the next step in the tutorial, Creating a Chatroom.
+
+Building a Chatroom in aos
+INFO
+
+If you've found yourself wanting to learn how to create a chatroom within ao, then that means we understand at least the basic methodology of sending and receiving messages. If not, it's suggested that you review the Messaging tutorial before proceeding.
+
+In this tutorial, we'll be building a chatroom within ao using the Lua scripting language. The chatroom will feature two primary functions:
+
+Register: Allows processes to join the chatroom.
+Broadcast: Sends messages from one process to all registered participants.
+Let's begin by setting up the foundation for our chatroom.
+
+Video Tutorial
+
+Step 1: The Foundation
+Open your preferred code editor, e.g. VS Code.
+INFO
+
+You may find it helpful to have the Recommended Extensions installed in your code editor to enhance your Lua scripting experience.
+
+Create a new file named chatroom.lua.
+Chatroom Lua File
+
+Step 2: Creating The Member List
+In chatroom.lua, you'll begin by initializing a list to track participants:
+
+lua
+Members = Members or {}
+Chatroom Lua File - Naming the Member List
+
+Save the chatroom.lua file
+Step 3: Load the Chatroom into aos
+With chatroom.lua saved, you'll now load the chatroom into aos.
+
+If you haven't already, start your aos in your terminal inside the directory where chatroom.lua is saved
+
+In the aos CLI, type the following script to incorporate your script into the aos process:
+
+lua
+.load chatroom.lua
+Loading the Chatroom into aos
+
+As the screenshot above shows, you may receive undefined as a response. This is expected, but we still want to make sure the file loaded correctly.
+
+INFO
+
+In the Lua Eval environment of aos, when you execute a piece of code that doesn't explicitly return a value, undefined is a standard response, indicating that no result was returned. This can be observed when loading resources or executing operations. For instance, executing X = 1 will yield undefined because the statement does not include a return statement.
+
+However, if you execute X = 1; return X, the environment will return the value 1. This behavior is essential to understand when working within this framework, as it helps clarify the distinction between executing commands that modify state versus those intended to produce a direct output.
+
+Type Members, or whatever you named your user list, in aos. It should return an empty array { }.
+
+Checking the Members List
+
+If you see an empty array, then your script has been successfully loaded into aos.
+
+Step 4: Creating Chatroom Functionalities
+The Registration Handler
+The register handler will allow processes to join the chatroom.
+
+Adding a Register Handler: Modify chatroom.lua to include a handler for Members to register to the chatroom with the following code:
+
+lua
+
+-- Modify `chatroom.lua` to include a handler for `Members`
+-- to register to the chatroom with the following code:
+
+  Handlers.add(
+    "Register",
+    Handlers.utils.hasMatchingTag("Action", "Register"),
+    function (msg)
+      table.insert(Members, msg.From)
+      Handlers.utils.reply("registered")(msg)
+    end
+  )
+Register Handler
+
+This handler will allow processes to register to the chatroom by responding to the tag Action = "Register". A printed message will confirm stating registered will appear when the registration is successful.
+
+Reload and Test: Let's reload and test the script by registering ourselves to the chatroom.
+
+Save and reload the script in aos using .load chatroom.lua.
+Check to see if the register handler loaded with the following script:
+lua
+ Handlers.list
+Checking the Handlers List
+
+This will return a list of all the handlers in the chatroom. Since this is most likely your first time developing in aos, you should only see one handler with the name Register.
+
+Let's test the registration process by registering ourselves to the chatroom:
+lua
+ Send({ Target = ao.id, Action = "Register" })
+If successful, you should see that there was a message added to your outbox and that you then see a new printed message that says registered.
+
+Registering to the Chatroom
+
+Finally, let's check to see if we were successfully added to the Members list:
+lua
+ Members
+If successful, you'll now see your process ID in the Members list.
+
+Checking the Members List
+
+Adding a Broadcast Handler
+Now that you have a chatroom, let's create a handler that will allow you to broadcast messages to all members of the chatroom.
+
+Add the following handler to the chatroom.lua file:
+
+lua
+  Handlers.add(
+    "Broadcast",
+    Handlers.utils.hasMatchingTag("Action", "Broadcast"),
+    function (msg)
+      for _, recipient in ipairs(Members) do
+        ao.send({Target = recipient, Data = msg.Data})
+      end
+      Handlers.utils.reply("Broadcasted.")(msg)
+    end
+  )
+This handler will allow you to broadcast messages to all members of the chatroom.
+
+Save and reload the script in aos using .load chatroom.lua.
+
+Let's test the broadcast handler by sending a message to the chatroom:
+
+lua
+  Send({Target = ao.id, Action = "Broadcast", Data = "Broadcasting My 1st Message" })
+If successful, you should see that there was a message added to your outbox and that you then see a new printed message that says Broadcasting My 1st Message because you are also a recipient of this message since you're a member of the Members chatroom.
+Step 5: Inviting Morpheus to the Chatroom
+Now that you've successfully registered yourself to the chatroom, let's invite Morpheus to join us. To do this, we'll send an invite to him that will allow him to register to the chatroom.
+
+Morpheus is an autonomous agent with a handler that will respond to the tag Action = "Join", in which will then have him use your Register tag to register to the chatroom.
+
+Let's send Morpheus an invitation to join the chatroom:
+
+lua
+Send({ Target = Morpheus, Action = "Join" })
+To confirm that Morpheus has joined the chatroom, check the Members list:
+
+lua
+Members
+If successful, you'll receive a broadcasted message from Morpheus.
+
+Step 6: Inviting Trinity to the Chatroom
+Within this message, he'll give you Trinity's process ID and tell you to invite her to the chatroom.
+
+Use the same processes to save her process ID as Trinity and to invite her to the chatroom as you did with Morpheus.
+
+If she successfully joins the chatroom, she'll then pose the next challenge to you, creating a token.
+
+Engaging Others in the Chatroom
+Onboarding Others
+Invite aos Users: Encourage other aos users to join your chatroom. They can register and participate in the broadcast.
+
+Provide Onboarding Instructions: Share a simple script with them for easy onboarding:
+
+lua
+-- Hey, let's chat on aos! Join my chatroom by sending this command in your aos environment:
+Send({ Target = [Your Process ID], Action = "Register" })
+-- Then, you can broadcast messages using:
+Send({Target = [Your Process ID], Action = "Broadcast", Data = "Your Message" })
+Next Steps
+Congratulations! You've successfully built a chatroom in ao and have invited Morpheus to join you. You've also created a broadcast handler to send messages to all members of the chatroom.
+
+Next, you'll continue to engage with Morpheus, but this time you'll be adding Trinity to the conversation. She will lead you through the next set of challenges. Good Luck!
+
+Crafting a Token
+INFO
+
+Diving deeper into the ao, you're now ready to create your own token, a symbol of value and exchange within this decentralized medium. If you've found yourself wanting to learn how to create a token, but haven't visited the Messaging and Build a Chatroom lessons, be sure to do so as this page is part of a multi-part interactive tutorial.
+
+When creating tokens, we'll continue to use the Lua Language within ao to mint a token, guided by the principles outlined in the Token Specification.
+
+Video Tutorial
+
+Continuing Down the Rabbit Hole
+In our last tutorial, Build a Chatroom, we learned how to create a chatroom within ao, invited both Morpheus and Trinity to the chatroom we created, and then Trinity has now asked for us to create a token for her as a way of proving ourselves worthy of continuing down the rabbit hole.
+
+Let us begin.
+
+The Two Paths To Building a Token
+There are two paths to take when building a token:
+
+The Blueprint: This is a predesigned template that helps you quickly build a token in ao. It is a great way to get started and can be customized to fit your needs.
+
+Check here to learn more about the Token Blueprint.
+
+The Manual Method: This is a step-by-step guide to building a token in ao from scratch. This path is for those who want to understand the inner workings of a token and how to build one from the ground up.
+
+Check here to review the full Build a Token guide.
+
+The Blueprint Method
+For this tutorial, we'll be using the Token Blueprint to create a token for Trinity. This is a predesigned template that helps you quickly build a token in ao.
+
+How To Use The Token Blueprint
+Make sure we're in the same directory as before during the previous steps in the tutorial.
+Open the Terminal.
+Start your aos process.
+Type in .load-blueprint token
+This will load the required handlers for the tutorials token within ao. It's important to note that the token blueprint isn't specific to this tutorial and can be used as a foundation for any token you wish to create.
+
+Verify the Blueprint is Loaded
+Type in Handlers.list to see the newly loaded handlers.
+
+You should see a new list of handlers that have been loaded into your aos process. If you've been following along the with the previous steps in the tutorial, you should also see the handlers for your chatroom, as well.
+
+Example:
+
+Token Handlers
+
+Testing the Token
+Now that the token blueprint is loaded, we can test the token by sending a message to ourselves using the Action = "Info" tag.
+
+lua
+Send({ Target = ao.id, Action = "Info" })
+This will print a message to the console, but to read the message, we'll need to call the .Data from the latest message.
+
+lua
+Inbox[#Inbox].Data
+
+# Replace `#Inbox` with the number of the last message received.
+This will print the token information to the console. It should show your process ID with the total balance of tokens available.
+
+Sending Tokens to Trinity
+Now that we've tested the token and it's working as expected, we can send some tokens to Trinity. We'll send 1000 tokens to Trinity using the Action = "Transfer" tag.
+
+lua
+Send({ Target = ao.id, Action = "Transfer", Recipient = Trinity, Quantity = "1000"})
+When Trinity receives the tokens, she'll respond to the transfer with a message to confirm that she's received the tokens.
+
+Her response will look something like this:
+
+Trinity: "Token received. Interesting. I wasn't sure you'd make it this far. I'm impressed, but we are not done yet. I want you to use this token to tokengate the chatroom. Do that, and then I will believe you could be the one."
+
+You've completed the process of creating a token and sending it to Trinity. You're now ready to move on to the next step in the tutorial. Tokengating the Chatroom.
+
+Tokengating the Chatroom
+INFO
+
+Now that we've created a token and sent it to Trinity, we can use the token to tokengate our chatroom. This will allow only those who have the token to enter the chatroom.
+
+Video Tutorial
+
+How to Tokengate the Chatroom
+Let's create a handler that will allow us to tokengate the chatroom. This handler will respond to the tag Action = "Broadcast" meaning it will replace the original Broadcast handler we built for our chatroom.
+
+Step 1: Start the same aos process.
+Be sure you're using the same aos process that you've used throughout the tutorial.
+
+Step 2: Open the chatroom.lua file.
+This is the same file we used to create the chatroom during the chatroom tutorial.
+
+Step 3: Edit your Broadcast handler.
+Replace the original Broadcast handler with the following code:
+
+lua
+Handlers.add(
+    "Broadcast",
+    Handlers.utils.hasMatchingTag("Action", "Broadcast"),
+    function(m)
+        if Balances[m.From] == nil or tonumber(Balances[m.From]) < 1 then
+            print("UNAUTH REQ: " .. m.From)
+            return
+        end
+        local type = m.Type or "Normal"
+        print("Broadcasting message from " .. m.From .. ". Content: " .. m.Data)
+        for i = 1, #Members, 1 do
+            ao.send({
+                Target = Members[i],
+                Action = "Broadcasted",
+                Broadcaster = m.From,
+                Data = m.Data
+            })
+        end
+    end
+)
+This handler will now check the balance of the sender's token before broadcasting the message to the chatroom. If the sender doesn't have a token, the message will not be broadcasted.
+
+Save the file.
+
+Step 4: Reload the chatroom.lua file.
+To replace the original broadcast handler with the new one, you'll need to reload the chatroom.lua file.
+
+lua
+.load chatroom.lua
+Step 5: Test the Tokengate
+Now that the chatroom is tokengated, let's test it by sending a message to the chatroom.
+
+From the original aos process
+First, we'll test it from the original aos process.
+
+lua
+Send({ Target = ao.id , Action = "Broadcast", Data = "Hello" })
+Expected Results:
+
+
+message added to outbox
+New Message From [Your Process ID]: Action = Broadcasted
+Broadcasting message from [Your Process ID]. Content: Hello.
+Testing from another Process ID.
+From a new aos process
+Now, let's test it from a new aos process that doesn't have a token.
+
+sh
+aos chatroom-no-token # the `chatroom-no-token` is the new process name
+We'll first need to register to the chatroom.
+
+lua
+.load chatroom.lua
+Send({ Target = ao.id, Action = "Register" })
+Expected Results:
+
+
+message added to outbox
+New Message From [Your Process ID]: Data = registered
+Now, let's try to send a message to the chatroom.
+
+lua
+Send({ Target = ao.id , Action = "Broadcast", Data = "Hello?" })
+Expected Results:
+
+
+message added to outbox
+UNAUTH REQ: [New Process ID]
+As you can see, the message was not broadcasted because the new process doesn't have a token.
+
+Tell Trinity "It is done"
+From the original aos process, send a broadcast message to the chatroom saying, "It is done".
+
+lua
+Send({ Target = ao.id , Action = "Broadcast", Data = "It is done" })
+WARNING
+
+It's important to be aware of exact match data and case sensitivity. If you're not receiving a response from either Morpheus or Trinity, be sure to check the the content of your Data and Tags.
+
+Trinity will then respond to the chatroom being tokengated.
+
+Expected Results:
+Trinity will send a message saying, "I guess Morpheus was right. You are the one. Consider me impressed. You are now ready to join The Construct, an exclusive chatroom available to only those that have completed this tutorial. Now, go join the others by using the same tag you used Register, with this process ID: [Construct Process ID] Good luck. -Trinity". Additionally, a footer will follow the message.
+
+WARNING
+
+Read the footer on Trinity's message carefully to find out how to submit your claim and recieve your CRED.
+
+Conclusion
+You've done it! You've successfully tokengated the chatroom. This has now unlocked access to the Construct, where only those that have fully completed this tutorial can enter.
+
+Congratulations!
+You've shown a great deal of promise. I hope you've enjoyed this tutorial. You're now ready to build freely in ao.
+
+aos
+While ao is a hyper parallel computer that enables distributed compute, aos is an operating system on top of that computer.
+
+With aos you can interact with processes and you can code processes in a very simple and intuitive way. All you need is a terminal and an editor.
+
+The language chosen for aos is lua, which is a robust and deterministic dynamic language that is a lot of fun to work with.
+
+If you have done so yet, take 15 minutes and go through our tutorials.
+
+Diving Deeper into aos
+Introduction to aos
+Installing
+aos CLI
+Prompt Customization
+A Ping-Pong Server
+Developer Guides
+Editor Setup
+Troubleshooting with ao.link
+Understanding the Inbox
+Frequently Asked Questions
+Modules
+JSON
+ao
+crypto
+Base64
+Pretty
+Utils
+
+Introduction
+aos is a different approach to building Processes or Contracts, the ao computer is a decentralized computer network that allows compute to run anywhere and aos in a unique interactive shell. You can use aos as your personal operating system, your development environment for building ao Processes, and your bot Army.
+
+Lets go over some basic commands.
+
+Variables
+If you want to display the contents of any variable through the console, simply type the variable name.
+
+lua
+Name
+Inbox
+the Inbox is a collection of messages that your Process has received.
+
+lua
+Inbox[1]
+If you want to get a count of messages, just add the # infront of Inbox.
+
+lua
+#Inbox
+The process of checking how many messages are in the inbox is a very common pattern. To make this easier, you can create a function that returns the number of messages within the inbox and displays it in the prompt.
+
+Use either .editor or .load file to load this function on your process.
+
+lua
+function Prompt()
+  return "Inbox: " .. #Inbox .. " > "
+end
+The Expected Results:
+
+lua
+undefined
+Inbox: 2 >
+Your prompt now has changed to include the number of messages in your inbox.
+
+Globals
+In aos process there are some Globals that can make development a little more intuitive.
+
+Name	Description	Type
+Inbox	This is a lua Table that stores all the messages that are received and not handlers by any handlers.	Table(Array)
+Send(Message)	This is a global function that is available in the interactive environment that allows you to send messages to Processes	function
+Spawn(Module, Message)	This is a global function that is available in the aos interactive environment that allows you to spawn processes	
+Name	a string that is set on init that describes the name of your process	string
+Owner	a string that is set on the init of the process that documents the owner of the process, warning if you change this value, it can brick you ability to interact with your process	string
+Handlers	a lua Table that contains helper functions that allows you to create handlers that execute functionality based on the pattern matching function on inbound messages	table
+Dump	a function that takes any lua Table and generates a print friendly output of the data	function
+Utils	a functional utility library with functions like map, reduce, filter	module
+ao	this is a core function library for sending messages and spawing processes	module
+Modules
+In aos there are some built in common lua modules that are already available for you to work with, these modules can be referenced with a "require" function.
+
+Name	Description
+json	a json module that allows you to encode and decode json documents
+ao	contains ao specific functions like send and spawn
+.base64	a base64 module that allows you to encode and decode base64 text
+.pretty	a pretty print module using the function tprint to output formatted syntax
+.utils	an utility function library
+
+CLI
+There are some command-line arguments you pass to our aos to do the following:
+
+[name] - create a new process or loads an existing process for your wallet
+--load [file] - load a file, you can add one or many of this command
+--cron [interval] - only used when creating a process
+--wallet [walletfile] - use a specific wallet
+Managing multiple processes with aos
+sh
+aos
+Starts or connects to a process with the name default
+
+sh
+aos chatroom
+Starts or connects to a process with the name of chatroom
+
+sh
+aos treasureRoom
+Starts or connects to a process with the name of treasureRoom
+
+Load flag
+sh
+aos treasureRoom --load greeting.lua --load treasure.lua --load puzzle.lua
+With the load flag I can load many source files to my process
+
+CRON Flag
+If you want to setup your process to react on a schedule we need to tell ao, we do that when we spawn the process.
+
+sh
+aos chatroom --cron 2-minutes
+Tag flags
+With the tag flags, you can start a process with some custom tags (for e.g. using them as static environment variables):
+
+sh
+aos chatroom --tag-name Chat-Theme --tag-value Dark --tag-name Chat-Name --tag-value Mychat
+The command above will add the extra tags to the transaction that spawns your process:
+
+ts
+// process data item tags
+[
+  ...
+  { name: "Chat-Theme", value: "Dark" },
+  { name: "Chat-Name", value: "Mychat" }
+  ...
+]
+
+Customizing the Prompt in aos
+Step 1: Open aos and Start the Editor
+Launch the aos command-line interface.
+Enter .editor to open the inline text editor.
+Step 2: Write the Custom Prompt Function
+In the editor, define your custom prompt function. For example:
+lua
+function Prompt()
+    return "YourName@aos> "
+end
+Customize "YourName@aos> " to your preferred prompt text.
+Step 3: Exit and Run Your Code
+To exit the editor and execute your code, type .done and then press Enter.
+Your aos prompt should now display the new custom format.
+Step 4: Save for Future Use (Optional)
+If you wish to use this prompt in future aos sessions, save your script in a Lua file.
+In subsequent sessions, load this script to apply your custom prompt.
+Maximizing Your Prompt
+There's a great deal of utility and creativity that can come from customizing your prompt. Several things you can do within your prompt are:
+
+Tracking the number of unhandled messages you have in your inbox by creating a function that shows how many messages you have.
+
+lua
+  --Example:
+  function Prompt()
+    return "YourName Inbox: [" .. #Inbox .. "] > "
+  end
+Tracking the number of members are within your process ID's chatroom.
+
+Tracking the balance of a specified token that your process ID holds.
+
+Conclusion
+Now that you understand how to maximize the utility within your Prompt, you've now gained a crucial step to streamlining your ao development experience.
+
+Creating a Pingpong Process in aos
+This tutorial will guide you through creating a simple "ping-pong" process in aos. In this process, whenever it receives a message with the data "ping", it will automatically reply with "pong". This is a basic example of message handling and interaction between processes in aos.
+
+Step 1: Open the aos CLI
+Start by opening your command-line interface and typing aos to enter the aos environment.
+Step 2: Access the Editor
+Type .editor in the aos CLI to open the inline text editor. This is where you'll write your ping-pong handler code.
+Step 3: Write the Pingpong Handler
+In the editor, enter the following Lua code to add a handler for the pingpong pattern:
+
+lua
+Handlers.add(
+  "pingpong",
+  Handlers.utils.hasMatchingData("ping"),
+  Handlers.utils.reply("pong")
+)
+This lua script does three things:
+
+It adds a new handler named "pingpong".
+It uses Handlers.utils.hasMatchingData("ping") to check if incoming messages contain the data "ping".
+If the message contains "ping", Handlers.utils.reply("pong") automatically sends back a message with the data "pong".
+Step 4: Exit the Editor
+After writing your code, type .done and press Enter to exit the editor and run the script.
+Step 5: Test the Pingpong Process
+To test the process, send a message with the data "ping" to the process. You can do this by typing the following command in the aos CLI:
+lua
+Send({ Target = ao.id, Data = "ping" })
+The process should respond with a message containing "pong" in the Inbox.
+Step 6: Monitor the Inbox
+Check your Inbox to see the "ping" message and your Outbox to confirm the "pong" reply.
+lua
+Inbox[#Inbox].Data
+Step 7: Experiment and Observe
+Experiment by sending different messages and observe how only the "ping" messages trigger the "pong" response.
+Step 8: Save Your Process (Optional)
+If you want to use this process in the future, save the handler code in a Lua file for easy loading
+into aos sessions.
+
+INFO
+
+ADDITIONAL TIP:
+
+Handler Efficiency: The simplicity of the handler function is key. Ensure that it's efficient and only triggers under the correct conditions.
+Conclusion
+Congratulations! You have now created a basic ping-pong process in aos. This tutorial provides a foundation for understanding message handling and process interaction within the aos environment. As you become more comfortable with these concepts, you can expand to more complex processes and interactions, exploring the full potential of aos.
+
+Editor setup
+Remembering all the built in ao functions and utilites can sometimes be hard. To enhance your developer experience, it is recommended to install the Lua Language Server extension into your favorite text editor and add the ao addon. It supports all built in aos modules and globals.
+
+VS Code
+Install the sumneko.lua extension:
+
+Search for "Lua" by sumneko in the extension marketplace
+Download and install the extension
+Open the VS Code command palette with Shift + Command + P (Mac) / Ctrl + Shift + P (Windows/Linux) and run the following command:
+
+> Lua: Open Addon Manager
+In the Addon Manager, search for "ao", it should be the first result. Click "Enable" and enjoy autcomplete!
+Other editors
+Verify that your editor supports the language server protocol
+Install Lua Language Server by following the instructions at luals.github.io
+Install the "ao" addon to the language server
+
+Understanding the Inbox
+In aos, processes are executed in response to messages via handlers. Unhandled messages are routed to the process's Inbox.
+
+What are Handlers?
+A handler is a function that receives and evaluates messages within your process. It acts upon messages by taking them as parameters.
+
+lua
+function main(Message, ao)
+  ...dostuff
+  return {
+    Output = ...,
+    Messages = {},
+    Spawns = {}
+  }
+
+end
+And the main function returns a lua Table providing Output, Messages, and Spawns or an Error. With aos you can add functionality to your process by using a Handler. The Handler takes three parameters:
+
+Name of the Handler
+Matcher function
+Handle function
+lua
+Handlers.add("name",
+  function (Msg)
+    -- Does this message match (return true or false)
+    return Msg.Action == "Register"
+  end,
+  function (Msg)
+    print("Registered User.")
+    table.insert(Members, Msg.From)
+    ao.send({Target = Msg.From, Data = "Registered."})
+  end
+)
+What about Inboxes?
+An inbox is a storage area for messages that have not yet been processed. Think of it as a holding zone for incoming, or "inbound," items awaiting handling. Once a message is processed, it's no longer considered "inbound" and thus leaves the inbox.
+
+Example: Consider the inbox like your voicemail. Just as an unanswered phone call is directed to voicemail for you to address later, messages that your Process doesn't immediately handle are sent to the inbox. This way, unhandled messages are stored until you're ready to process them.
+
+Summary
+Initially, it might seem like all messages are meant to land in your Inbox, which can be puzzling if they disappear after being handled. The analogy of a voicemail should clarify this: much like calls you answer don't go to voicemail, messages you handle won't appear in your Inbox. This illustrates the roles of both the Inbox and Handlers.
+
+Troubleshooting using ao.link
+Working with a decentralized computer and network, you need to be able to troubleshoot more than your own code. You need to be able to track messages, token balances, token transfers of processes. This is where https://ao.link becomes an essential tool in your toolbox.
+
+ao.link homepage displaying ao network stats
+
+Analytics
+AOLink has a set of 4 analytic measures:
+
+Total Messages
+Total Users
+Total Processes
+Total Modules
+These analytics give you a quick view into the ao network's total processing health.
+
+Events
+Below, the analytics are the latest events that have appeared on the ao computer. You have a list of messages being scheduled and that have been executed. These events are any of the ao Data Protocol Types. And you can click on the Process ID or the Message ID to get details about each.
+
+ao.link list of events
+
+Message Details
+ao.link message details displaying the message processed
+
+The message details give you key details about:
+
+From
+To
+Block Height
+Created
+Tags
+Data
+Result Type
+Data
+If you want to further troubleshoot and debug, you have the option to look at the result of the CU (Compute Unit) by clicking on "Compute".
+
+ao.link compute result example for debugging
+
+And further understand linked messages.ao.link linked messages
+
+Process Details
+ao.link displaying a process in details
+
+The process details provide you with information about the process it's useful to see in the tags with what module this got instantiated from. If you notice on the left you see the interaction with the process displayed on a graph. In this case, this is DevChat, and you can see all the processes that have interacted by Registering and Broadcasting Messages.
+
+You can effortless check the Info Handler, by pressing the "Fetch" button.ao.link fetching the info hanlder
+
+On the bottom you see the processes balance and all messages send, with the option to break it down into Token transfers and Token balances using the tabs.ao.link process message and token info
+
+Further Questions?
+Feel free to reach out on the community Discord of Autonomous Finance, for all questions and support regarding ao.link. https://discord.gg/4kF9HKZ4Wu
+
+Summary
+AOLink is an excellent tool for tracking events in the ao computer. Give it a try. Also, there is another scanner tool available on the permaweb: https://ao_marton.g8way.io/ - check it out!
+
+FAQ
+Ownership
+Understaning Process Ownership
+Start a new process with the aos console, the ownership of the process is set to your wallet address. aos uses the Owner global variable to define the ownership of the process. If you wish to transfer ownership or lock the process so that no one can own, you simply modify the Owner variable to another wallet address or set it to nil.
+
+JSON
+encoding data as json
+When sending data to another process or an external service, you may want to use JSON as a way to encode the data for recipients. Using the json module in lua, you can encode and decode pure lua tables that contain values.
+
+lua
+Send({Target = Router, Data = require('json').encode({hello = "world"})})
+Send vs ao.send
+When to use Send vs ao.send
+Both functions send a message to a process, the difference is ao.send returns the message, in case you want to log it or troubleshoot. The Send function is intended to be used in the console for easier access. It is preferred to use ao.send in the handlers. But they are both interchangable in aos.
+
+.load
+This feature allows you to load lua code from a source file on your local machine, this simple feature gives you a nice DX experience for working with aos processes.
+
+When creating handlers you may have a lot of code and you want to take advantage of a rich development environment like vscode. You can even install the lua extension to get some syntax checking.
+
+So how do you publish your local lua source code to your ao process? This is where the .load command comes into play.
+
+hello.lua
+
+lua
+Handlers.add(
+  "ping",
+  Handlers.utils.hasMatchingData("ping"),
+  Handlers.utils.reply("pong")
+)
+aos shell
+
+lua
+.load hello.lua
+
+Building a Token in ao
+When creating tokens, we'll continue to use the Lua Language within ao to mint a token, guided by the principles outlined in the Token Specification.
+
+Two Ways to Create Tokens:
+1 - Use the token blueprint:
+
+.load-blueprint token
+
+Using the token blueprint will create a token with all the handlers and state already defined. This is the easiest way to create a token. You'll be able to customize those handlers and state to your after loading the blueprint.
+
+You can learn more about available blueprints here: Blueprints
+
+INFO
+
+Using the token blueprint will definitely get quickly, but you'll still want to understand how to load and test the token, so you can customize it to your needs.
+
+2 - Build from Scratch:
+
+The following guide will guide you through the process of creating a token from scratch. This is a more advanced way to create a token, but it will give you a better understanding of how tokens work.
+
+Preparations
+Step 1: Initializing the Token
+Open our preferred text editor, preferrably from within the same folder you used during the previous tutorial.
+Create a new file named token.lua.
+Within token.lua, you'll begin by initializing the token's state, defining its balance, name, ticker, and more:
+lua
+local json = require('json')
+
+if not Balances then Balances = { [ao.id] = 100000000000000 } end
+
+if Name ~= 'My Coin' then Name = 'My Coin' end
+
+if Ticker ~= 'COIN' then Ticker = 'COIN' end
+
+if Denomination ~= 10 then Denomination = 10 end
+
+if not Logo then Logo = 'optional arweave TXID of logo image' end
+token.lua image 1
+
+Let's break down what we've done here:
+
+local json = require('json'): This first line of this code imports a module for later use.
+
+if not Balances then Balances = { [ao.id] = 100000000000000 } end: This second line is initializing a Balances table which is the way the Process tracks who posses the token. We initialize our token process ao.id to start with all the balance.
+
+The Next 4 Lines, if Name, if Ticker, if Denomination, and if not Logo are all optional, except for if Denomination, and are used to define the token's name, ticker, denomination, and logo respectively.
+
+INFO
+
+The code if Denomination ~= 10 then Denomination = 10 end tells us the number of the token that should be treated as a single unit.
+
+Step 2: Info and Balances Handlers
+
+Incoming Message Handler
+Now lets add our first Handler to handle incoming Messages.
+
+lua
+Handlers.add('info', Handlers.utils.hasMatchingTag('Action', 'Info'), function(msg)
+  ao.send(
+      { Target = msg.From, Tags = { Name = Name, Ticker = Ticker, Logo = Logo, Denomination = tostring(Denomination) } })
+end)
+Token.lua image 2
+
+INFO
+
+At this point, you've probably noticed that we're building all of the handlers inside the token.lua file rather than using .editor.
+
+With many handlers and processes, it's perfectly fine to create your handlers using .editor, but because we're creating a full process for initizialing a token, setting up info and balances handlers, transfer handlers, and a minting handler, it's best to keep everything in one file.
+
+This also allows us to maintain consistency since each handler will be updated every time we reload the token.lua file into aos.
+
+This code means that if someone Sends a message with the Tag, Action = "info", our token will Send back a message with all of the information defined above. Note the Target = msg.From, this tells ao we are replying to the process that sent us this message.
+
+Info & Token Balance Handlers
+Now we can add 2 Handlers which provide information about token Balances.
+
+lua
+Handlers.add('balance', Handlers.utils.hasMatchingTag('Action', 'Balance'), function(msg)
+  local bal = '0'
+
+  -- If not Target is provided, then return the Senders balance
+  if (msg.Tags.Target and Balances[msg.Tags.Target]) then
+    bal = tostring(Balances[msg.Tags.Target])
+  elseif Balances[msg.From] then
+    bal = tostring(Balances[msg.From])
+  end
+
+  ao.send({
+    Target = msg.From,
+    Tags = { Target = msg.From, Balance = bal, Ticker = Ticker, Data = json.encode(tonumber(bal)) }
+  })
+end)
+
+Handlers.add('balances', Handlers.utils.hasMatchingTag('Action', 'Balances'),
+             function(msg) ao.send({ Target = msg.From, Data = json.encode(Balances) }) end)
+The first Handler above Handlers.add('balance' handles a process or person requesting their own balance or the balance of a Target. Then replies with a message containing the info. The second Handler Handlers.add('balances' just replies with the entire Balances table.
+
+Step 3: Transfer Handlers
+Before we begin testing we will add 2 more Handlers one which allows for the transfer of tokens between processes or users.
+
+lua
+Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), function(msg)
+  assert(type(msg.Tags.Recipient) == 'string', 'Recipient is required!')
+  assert(type(msg.Tags.Quantity) == 'string', 'Quantity is required!')
+
+  if not Balances[msg.From] then Balances[msg.From] = 0 end
+
+  if not Balances[msg.Tags.Recipient] then Balances[msg.Tags.Recipient] = 0 end
+
+  local qty = tonumber(msg.Tags.Quantity)
+  assert(type(qty) == 'number', 'qty must be number')
+
+  if Balances[msg.From] >= qty then
+    Balances[msg.From] = Balances[msg.From] - qty
+    Balances[msg.Tags.Recipient] = Balances[msg.Tags.Recipient] + qty
+
+    --[[
+      Only Send the notifications to the Sender and Recipient
+      if the Cast tag is not set on the Transfer message
+    ]] --
+    if not msg.Tags.Cast then
+      -- Debit-Notice message template, that is sent to the Sender of the transfer
+      local debitNotice = {
+        Target = msg.From,
+        Action = 'Debit-Notice',
+        Recipient = msg.Recipient,
+        Quantity = tostring(qty),
+        Data = Colors.gray ..
+            "You transferred " ..
+            Colors.blue .. msg.Quantity .. Colors.gray .. " to " .. Colors.green .. msg.Recipient .. Colors.reset
+      }
+      -- Credit-Notice message template, that is sent to the Recipient of the transfer
+      local creditNotice = {
+        Target = msg.Recipient,
+        Action = 'Credit-Notice',
+        Sender = msg.From,
+        Quantity = tostring(qty),
+        Data = Colors.gray ..
+            "You received " ..
+            Colors.blue .. msg.Quantity .. Colors.gray .. " from " .. Colors.green .. msg.From .. Colors.reset
+      }
+
+      -- Add forwarded tags to the credit and debit notice messages
+      for tagName, tagValue in pairs(msg) do
+        -- Tags beginning with "X-" are forwarded
+        if string.sub(tagName, 1, 2) == "X-" then
+          debitNotice[tagName] = tagValue
+          creditNotice[tagName] = tagValue
+        end
+      end
+
+      -- Send Debit-Notice and Credit-Notice
+      ao.send(debitNotice)
+      ao.send(creditNotice)
+    end
+  else
+    ao.send({
+      Target = msg.Tags.From,
+      Tags = { Action = 'Transfer-Error', ['Message-Id'] = msg.Id, Error = 'Insufficient Balance!' }
+    })
+  end
+end)
+In summary, this code checks to make sure the Recipient and Quantity Tags have been provided, initializes the balances of the person sending the message and the Recipient if they dont exist and then attempts to transfer the specified quantity to the Recipient in the Balances table.
+
+lua
+Balances[msg.From] = Balances[msg.From] - qty
+Balances[msg.Tags.Recipient] = Balances[msg.Tags.Recipient] + qty
+If the transfer was successful a Debit-Notice is sent to the sender of the original message and a Credit-Notice is sent to the Recipient.
+
+lua
+-- Send Debit-Notice to the Sender
+ao.send({
+    Target = msg.From,
+    Tags = { Action = 'Debit-Notice', Recipient = msg.Tags.Recipient, Quantity = tostring(qty) }
+})
+-- Send Credit-Notice to the Recipient
+ao.send({
+    Target = msg.Tags.Recipient,
+    Tags = { Action = 'Credit-Notice', Sender = msg.From, Quantity = tostring(qty) }
+})
+If there was insufficient balance for the transfer it sends back a failure message
+
+lua
+ao.send({
+    Target = msg.Tags.From,
+    Tags = { Action = 'Transfer-Error', ['Message-Id'] = msg.Id, Error = 'Insufficient Balance!' }
+})
+The line if not msg.Tags.Cast then Means were not producing any messages to push if the Cast tag was set. This is part of the ao protocol.
+
+Step 4: Mint Handler
+Finally, we will add a Handler to allow the minting of new tokens.
+
+lua
+Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function(msg, env)
+  assert(type(msg.Tags.Quantity) == 'string', 'Quantity is required!')
+
+  if msg.From == env.Process.Id then
+    -- Add tokens to the token pool, according to Quantity
+    local qty = tonumber(msg.Tags.Quantity)
+    Balances[env.Process.Id] = Balances[env.Process.Id] + qty
+  else
+    ao.send({
+      Target = msg.Tags.From,
+      Tags = {
+        Action = 'Mint-Error',
+        ['Message-Id'] = msg.Id,
+        Error = 'Only the Process Owner can mint new ' .. Ticker .. ' tokens!'
+      }
+    })
+  end
+end)
+This code checks to make sure the Quantity Tag has been provided and then adds the specified quantity to the Balances table.
+
+Loading and Testing
+Once you've created your token.lua file, or you've used .load-blueprint token, you're now ready to begin testing.
+
+1 - Start the aos process
+Make sure you've started your aos process by running aos in your terminal.
+
+2 - Loading the token.lua file
+If you've followd along with the guide, you'll have a token.lua file in the same directory as your aos process. From the aos prompt, load in the file.
+
+lua
+.load token.lua
+3 - Testing the Token
+Now we can send Messages to our aos process id, from the same aos prompt to see if is working. If we use ao.id as the Target we are sending a message to ourselves.
+
+lua
+Send({ Target = ao.id, Action = "Info" })
+This should print the Info defined in the contract. Check the latest inbox message for the response.
+
+lua
+Inbox[#Inbox].Tags
+This should print the Info defined in the contract.
+
+INFO
+
+Make sure you numerically are checking the last message. To do so, run #Inbox first to see the total number of messages are in the inbox. Then, run the last message number to see the data.
+
+Example:
+
+If #Inbox returns 5, then run Inbox[5].Data to see the data.
+
+4 - Transfer
+Now, try to transfer a balance of tokens to another wallet or process id.
+
+INFO
+
+If you need another process id, you can run aos [name] in another terminal window to get a new process id. Make sure it's not the same aos [name] as the one you're currently using.
+
+Example:
+
+If you're using aos in one terminal window, you can run aos test in another terminal window to get a new process id.
+
+lua
+Send({ Target = ao.id, Tags = { Action = "Transfer", Recipient = 'another wallet or processid', Quantity = '10000' }})
+After sending, you'll receive a printed message in the terminal similar to Debit-Notice on the sender's side and Credit-Notice on the recipient's side.
+
+5 - Check the Balances
+Now that you've transferred some tokens, let's check the balances.
+
+lua
+Send({ Target = ao.id, Tags = { Action = "Balances" }})
+lua
+Inbox[#Inbox].Data
+You will see two process IDs or wallet addresses, each displaying a balance. The first should be your sending process ID, the second should be the recipient's process ID.
+
+6 - Minting Tokens
+Finally, attempt to mint some tokens.
+
+lua
+Send({ Target = ao.id, Tags = { Action = "Mint", Quantity = '1000' }})
+And check the balances again.
+
+lua
+Send({ Target = ao.id, Tags = { Action = "Balances" }})
+Inbox[#Inbox].Data
+You'll then see the balance of the process ID that minted the tokens has increased.
+
+Conclusion
+That concludes the "Build a Token" guide. Learning out to build custom tokens will unlock a great deal of potential for your projects; whether that be creating a new currency, a token for a game, a governance token, or anything else you can imagine.
+
+Blueprints
+Blueprints are predesigned templates that help you quickly build in ao. They are a great way to get started and can be customized to fit your needs.
+
+Token Blueprint
+The Token Blueprint is a predesigned template that helps you quickly build a token in ao. It is a great way to get started and can be customized to fit your needs.
+
+Unpacking the Token Blueprint
+Balances: The Balances array is used to store the token balances of the participants.
+
+Info Handler: The info handler allows processes to retrieve the token parameters, like Name, Ticker, Logo, and Denomination.
+
+Balance Handler: The balance handler allows processes to retrieve the token balance of a participant.
+
+Balances Handler: The balances handler allows processes to retrieve the token balances of all participants.
+
+Transfer Handler: The transfer handler allows processes to send tokens to another participant.
+
+Mint Handler: The mint handler allows processes to mint new tokens.
+
+How To Use:
+Open your preferred text editor.
+Open the Terminal.
+Start your aos process.
+Type in .load-blueprint token
+Verify the Blueprint is Loaded:
+Type in Handlers.list to see the newly loaded handlers.
+
+What's in the Token Blueprint:
+lua
+local bint = require('.bint')(256)
+local ao = require('ao')
+--[[
+  This module implements the ao Standard Token Specification.
+
+  Terms:
+    Sender: the wallet or Process that sent the Message
+
+  It will first initialize the internal state, and then attach handlers,
+    according to the ao Standard Token Spec API:
+
+    - Info(): return the token parameters, like Name, Ticker, Logo, and Denomination
+
+    - Balance(Target?: string): return the token balance of the Target. If Target is not provided, the Sender
+        is assumed to be the Target
+
+    - Balances(): return the token balance of all participants
+
+    - Transfer(Target: string, Quantity: number): if the Sender has a sufficient balance, send the specified Quantity
+        to the Target. It will also issue a Credit-Notice to the Target and a Debit-Notice to the Sender
+
+    - Mint(Quantity: number): if the Sender matches the Process Owner, then mint the desired Quantity of tokens, adding
+        them the Processes' balance
+]]
+--
+local json = require('json')
+
+--[[
+     Initialize State
+
+     ao.id is equal to the Process.Id
+   ]]
+--
+if not Balances then Balances = { [ao.id] = tostring(bint(10000 * 1e12)) } end
+
+if Name ~= 'Points Coin' then Name = 'Points Coin' end
+
+if Ticker ~= 'Points' then Ticker = 'PNTS' end
+
+if Denomination ~= 12 then Denomination = 12 end
+
+if not Logo then Logo = 'SBCCXwwecBlDqRLUjb8dYABExTJXLieawf7m2aBJ-KY' end
+
+--[[
+     Add handlers for each incoming Action defined by the ao Standard Token Specification
+   ]]
+--
+
+--[[
+     Info
+   ]]
+--
+Handlers.add('info', Handlers.utils.hasMatchingTag('Action', 'Info'), function(msg)
+  ao.send({
+    Target = msg.From,
+    Name = Name,
+    Ticker = Ticker,
+    Logo = Logo,
+    Denomination = tostring(Denomination)
+  })
+end)
+
+--[[
+     Balance
+   ]]
+--
+Handlers.add('balance', Handlers.utils.hasMatchingTag('Action', 'Balance'), function(msg)
+  local bal = '0'
+
+  -- If not Target is provided, then return the Senders balance
+  if (msg.Tags.Target and Balances[msg.Tags.Target]) then
+    bal = Balances[msg.Tags.Target]
+  elseif Balances[msg.From] then
+    bal = Balances[msg.From]
+  end
+
+  ao.send({
+    Target = msg.From,
+    Balance = bal,
+    Ticker = Ticker,
+    Account = msg.Tags.Target or msg.From,
+    Data = bal
+  })
+end)
+
+--[[
+     Balances
+   ]]
+--
+Handlers.add('balances', Handlers.utils.hasMatchingTag('Action', 'Balances'),
+  function(msg) ao.send({ Target = msg.From, Data = json.encode(Balances) }) end)
+
+--[[
+     Transfer
+   ]]
+--
+Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), function(msg)
+  assert(type(msg.Recipient) == 'string', 'Recipient is required!')
+  assert(type(msg.Quantity) == 'string', 'Quantity is required!')
+  assert(bint.__lt(0, bint(msg.Quantity)), 'Quantity must be greater than 0')
+
+  if not Balances[msg.From] then Balances[msg.From] = "0" end
+  if not Balances[msg.Recipient] then Balances[msg.Recipient] = "0" end
+
+  local qty = bint(msg.Quantity)
+  local balance = bint(Balances[msg.From])
+  if bint.__le(qty, balance) then
+    Balances[msg.From] = tostring(bint.__sub(balance, qty))
+    Balances[msg.Recipient] = tostring(bint.__add(Balances[msg.Recipient], qty))
+
+    --[[
+         Only send the notifications to the Sender and Recipient
+         if the Cast tag is not set on the Transfer message
+       ]]
+    --
+    if not msg.Cast then
+      -- Send Debit-Notice to the Sender
+      ao.send({
+        Target = msg.From,
+        Action = 'Debit-Notice',
+        Recipient = msg.Recipient,
+        Quantity = tostring(qty),
+        Data = Colors.gray .. "You transferred " .. Colors.blue .. msg.Quantity .. Colors.gray .. " to " .. Colors.green .. msg.Recipient .. Colors.reset
+      })
+      -- Send Credit-Notice to the Recipient
+      ao.send({
+        Target = msg.Recipient,
+        Action = 'Credit-Notice',
+        Sender = msg.From,
+        Quantity = tostring(qty),
+        Data = Colors.gray .. "You received " .. Colors.blue .. msg.Quantity .. Colors.gray .. " from " .. Colors.green .. msg.From .. Colors.reset
+      })
+    end
+  else
+    ao.send({
+      Target = msg.From,
+      Action = 'Transfer-Error',
+      ['Message-Id'] = msg.Id,
+      Error = 'Insufficient Balance!'
+    })
+  end
+end)
+
+--[[
+    Mint
+   ]]
+--
+Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function (msg)
+  assert(type(msg.Quantity) == 'string', 'Quantity is required!')
+  assert(bint.__lt(0, msg.Quantity), 'Quantity must be greater than zero!')
+
+  if not Balances[ao.id] then Balances[ao.id] = "0" end
+
+  if msg.From == ao.id then
+    -- Add tokens to the token pool, according to Quantity
+    Balances[msg.From] = tostring(bint.__add(Balances[Owner], msg.Quantity))
+    ao.send({
+      Target = msg.From,
+      Data = Colors.gray .. "Successfully minted " .. Colors.blue .. msg.Quantity .. Colors.reset
+    })
+  else
+    ao.send({
+      Target = msg.From,
+      Action = 'Mint-Error',
+      ['Message-Id'] = msg.Id,
+      Error = 'Only the Process Owner can mint new ' .. Ticker .. ' tokens!'
+    })
+  end
+end)
+
+Voting Blueprint
+The Voting Blueprint is a predesigned template that helps you quickly build a voting system in ao. It is a great way to get started and can be customized to fit your needs.
+
+Prerequisites
+The Staking Blueprint requires the Token Blueprint to be loaded, first.
+
+Unpacking the Voting Blueprint
+Balances: The Balances array is used to store the token balances of the participants.
+
+Votes: The Votes array is used to store the votes of the participants.
+
+Vote Action Handler: The vote handler allows processes to vote. When a process sends a message with the tag Action = "Vote", the handler will add the vote to the Votes array and send a message back to the process confirming the vote.
+
+Finalization Handler: The finalize handler allows processes to finalize the voting process. When a process sends a message with the tag Action = "Finalize", the handler will process the votes and finalize the voting process.
+
+How To Use:
+Open your preferred text editor.
+Open the Terminal.
+Start your aos process.
+Type in .load-blueprint voting
+Verify the Blueprint is Loaded:
+Type in Handlers.list to see the newly loaded handlers.
+
+What's in the Voting Blueprint:
+lua
+Balances = Balances or {}
+Votes = Votes or {}
+
+-- Vote Action Handler
+Handlers.vote = function(msg)
+  local quantity = Stakers[msg.From].amount
+  local target = msg.Tags.Target
+  local side = msg.Tags.Side
+  local deadline = tonumber(msg['Block-Height']) + tonumber(msg.Tags.Deadline)
+  assert(quantity > 0, "No staked tokens to vote")
+  Votes[target] = Votes[target] or { yay = 0, nay = 0, deadline = deadline }
+  Votes[target][side] = Votes[target][side] + quantity
+end
+
+-- Finalization Handler
+local finalizationHandler = function(msg)
+  local currentHeight = tonumber(msg['Block-Height'])
+  -- Process voting
+  for target, voteInfo in pairs(Votes) do
+      if currentHeight >= voteInfo.deadline then
+          if voteInfo.yay > voteInfo.nay then
+              print("Handle Vote")
+          end
+          -- Clear the vote record after processing
+          Votes[target] = nil
+      end
+  end
+end
+
+-- wrap function to continue handler flow
+local function continue(fn)
+  return function (msg)
+    local result = fn(msg)
+    if (result) == -1 then
+      return 1
+    end
+    return result
+  end
+end
+
+Handlers.add("vote",
+  continue(Handlers.utils.hasMatchingTag("Action", "Vote")), Handlers.vote)
+-- Finalization handler should be called for every message
+Handlers.add("finalize", function (msg) return -1 end, finalizationHandler)
+
+Modules
+Documentation on all the built-in modules for aos.
+
+Available Modules
+JSON
+ao
+crypto
+Base64
+pretty
+Utils
+
+JSON
+The JSON module allows you to encode and decode objects using JavaScript Object Notation.
+
+Example usage
+lua
+local json = require("json")
+
+json.encode({
+  a_string = "This is a string",
+  nums = { 1, 2, 3 }
+})
+Module functions
+encode()
+This function returns a string representation of a Lua object in JSON.
+
+Parameters:
+val: {any} The object to format as JSON
+Returns: JSON string representation of the provided object
+Example
+lua
+--[[
+  prints:
+  "[{"name":"John Doe","age":23},{"name":"Bruce Wayne",age:34}]"
+]]--
+print(json.encode({
+  { name = "John Doe", age = 23 },
+  { name = "Bruce Wayne", age = 34 }
+}))
+
+-- prints "false"
+print(json.encode(false))
+decode()
+The function takes a JSON string and turns it into a Lua object.
+
+Parameters:
+val: {any} The JSON string to decode
+Returns: Lua object corresponding to the JSON string (throws an error for invalid JSON strings)
+Example
+lua
+--[[
+  creates the following table:
+  { hello = "world" }
+]]--
+json.decode('{ "hello": "world" }')
+
+-- creates a boolean with true value
+json.decode("true")
+
+ao
+Built in global library for sending messages, spawning processes, etc.
+
+Example usage
+The global ao object is accessible anywhere in your process:
+
+lua
+-- sends a message to another process ("Transfer" action)
+ao.send({
+  Target = "usjm4PCxUd5mtaon7zc97-dt-3qf67yPyqgzLnLqk5A",
+  Action = "Transfer",
+  Recipient = "XjvCPN31XCLPkBo9bUeB7vAK0VC6-eY52-CS-6Iho8F",
+  Quantity = tostring(1045)
+})
+Module variables
+ao.id: {string} Holds the Arweave ID of your process
+ao.authorities: {table} An array of optionally trusted callers
+ao._module: {string} The WASM base module of the process that is executed on each call
+ao._ref: {number} The counter of the messages sent out in one call instance
+ao._version: {string} The ao global library version
+ao.env: {table} The process environment from the initializing message
+ao.env
+The ao.env global variable holds informationg about the initializing message of the process. It follows the schema below:
+
+json
+{
+  "type": "object",
+  "properties": {
+    "Process": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "example": "A1b2C3d4E5f6G7h8I9j0K1L2M3N4O5P6Q7R8S9T0"
+        },
+        "Owner": {
+          "type": "string",
+          "example": "Xy9PqW3vR5sT8uB1nM6dK0gF2hL4jC7iE9rV3wX5"
+        },
+        "TagArray": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "App-Name"
+              },
+              "value": {
+                "type": "string",
+                "example": "aos"
+              }
+            }
+          },
+          "example": [{ "name": "App-Name", "value": "aos" }]
+        },
+        "Tags": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "patternProperties": {
+            "": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "App-Name": "aos"
+          }
+        }
+      }
+    }
+  }
+}
+Module functions
+log()
+Appends the provided value/message to the Results.Output table which can later be read using the aoconnect library. Useful for debugging as well as returning an output value to a caller.
+
+Parameters:
+txt: {any} The value/message to be appended to the output table
+Returns: {void}
+Examples
+lua
+...
+ao.log("Breakpoint reached")
+...
+ao.log({
+  Message = "Transferred " .. quantity .. " tokens to " .. target,
+  Quantity = quantity,
+  Recipient = target
+})
+send()
+Sends a message to another process by inserting the provided message item into the process' outbox along with the ao specs compliant message tags.
+
+Parameters:
+msg: {table} The message to be sent
+Returns: The sent message item with the applied tags and DataItem fields.
+Note: Each field of the msg table will be appended as a DataItem tag, except the following: "Target", "Data", "Anchor", "Tags". These fields are interpreted as root level DataItem fields.
+
+Example
+lua
+-- sends a message to "XjvCPN31XCLPkBo9bUeB7vAK0VC6-eY52-CS-6Iho8F"
+-- with the tag { "name": "Action", "value": "Ping" }
+ao.send({
+  Target = "XjvCPN31XCLPkBo9bUeB7vAK0VC6-eY52-CS-6Iho8F",
+  Action = "Ping"
+})
+spawn()
+Allows spawning a new process, from within another process.
+
+Parameters:
+module: {string} Arweave transaction ID of the module used by the new process
+msg: {table} The message that initializes the process, with the format described above
+Returns: The initializing message item
+Example
+lua
+ao.spawn("n0BFH80b73mi9VAWUzyuG9gEC3LI2zU2BFxum0N8A9s", {
+  ["Custom-Tag"]: "Custom-Value"
+})
+
+Base64
+A small base64 module to encode or decode base64 text.
+
+Note: It is recommended to enable caching for large chunks of texts for up to x2 optimization.
+
+Example usage
+lua
+local base64 = require(".base64")
+
+local str = "This will be encoded"
+
+-- is: "VGhpcyB3aWxsIGJlIGVuY29kZWQ="
+local encoded = base64.encode(str)
+
+-- is: "This will be encoded"
+local decoded = base64.decode(encoded)
+
+assert(decoded == str)
+Module functions
+encode()
+This function encodes the provided string using the default encoder table. The encoder can be customized and a cache is available for larger chunks of data.
+
+Parameters:
+str: {string} The string to encode
+encoder: {table} Optional custom encoding table
+usecache: {boolean} Optional cache for large strings (turned off by default)
+Returns: Base64 encoded string
+Examples
+lua
+-- prints: "SGVsbG8gd29ybGQ="
+print(base64.encode("Hello world"))
+
+-- customize encoder and allow caching
+base64.encode(
+  "Hello world",
+  base64.makeencoder(nil, "-"),
+  true
+)
+decode()
+This function decodes the provided base64 encoded string using the default decoder table. The decoder can be customized and a cache is also available here.
+
+Parameters:
+str: {string} The base64 encoded string to decode
+decoder: {table} Optional custom decoding table
+usecache: {boolean} Optional cache for large strings (turned off by default)
+Returns: Decoded string
+Examples
+lua
+-- prints: "Hello world"
+print(base64.decode("SGVsbG8gd29ybGQ="))
+
+-- customize decoder and allow caching
+base64.decode(
+  "SGVsbG8gd29ybGQ=",
+  base64.makedecoder(nil, "-"),
+  true
+)
+makeencoder()
+Allows creating a new encoder table to customize the encode() function's result.
+
+Parameters:
+s62: {string} Optional custom char for 62 (+ by default)
+s63: {string} Optional custom char for 63 (/ by default)
+spad: {string} Optional custom padding char (= by default)
+Returns: Custom encoder table
+Examples
+lua
+-- create custom encoder
+local encoder = base64.makeencoder(nil, nil, "~")
+
+-- prints "SGVsbG8gd29ybGQ~" instead of "SGVsbG8gd29ybGQ="
+print(base64.encode("Hello world", encoder))
+makedecoder()
+Allows creating a new decoder table to be able to decode custom-encoded base64 strings.
+
+Parameters:
+s62: {string} Optional custom char for 62 (+ by default)
+s63: {string} Optional custom char for 63 (/ by default)
+spad: {string} Optional custom padding char (= by default)
+Returns: Custom decoder table
+Examples
+lua
+local encoder = base64.makeencoder(nil, nil, "~")
+local decoder = base64.makedecoder(nil, nil, "~")
+
+-- "SGVsbG8gd29ybGQ~"
+local encoded = base64.encode("Hello world", encoder)
+
+-- prints "Hello world"
+print(base64.decode(encoded, decoder))
+
+Pretty
+This module allows printing formatted, human-friendly and readable syntax.
+
+Module functions
+tprint()
+Returns a formatted string of the structure of the provided table.
+
+Parameters:
+tbl: {table} The table to format
+indent: {number} Optional indentation of each level of the table
+Returns: Table structure formatted as a string
+Examples
+lua
+local pretty = require(".pretty")
+
+local formatted = pretty.tprint({
+  name = "John Doe",
+  age = 22,
+  friends = { "Maria", "Victor" }
+}, 2)
+
+-- prints the formatted table structure
+print(formatted)
+
+Utils
+A utility library for generic table manipulation and validation. It supports both curry-styled and traditional programming.
+
+Note: It is important to verify that the inputs provided to the following functions match the expected types.
+
+Example usage
+lua
+local utils = require(".utils")
+
+local totalSupply = utils.reduce(
+  function (acc, v) return acc + v end,
+  0,
+  { 2, 4, 9 }
+)
+
+print(totalSupply) -- prints 15
+Module functions
+concat()
+This function concatenates array b to array a.
+
+Parameters:
+a: {table} The base array
+b: {table} The array to concat to the base array
+Returns: An unified array of a and b
+Examples
+lua
+-- returns { 1, 2, 3, 4, 5, 6 }
+concat({ 1, 2, 3 })({ 4, 5, 6 })
+
+-- returns { "hello", "world", "and", "you" }
+concat({ "hello", "world" }, { "and", "you" })
+reduce()
+This function executes the provided reducer function for all array elements, finally providing one (unified) result.
+
+Parameters:
+fn: {function} The reducer function. It receives the previous result, the current element's value and key in this order
+initial: {any} An optional initial value
+t: {table} The array to reduce
+Returns: A single result from running the reducer across all table elements
+Examples
+lua
+local sum = utils.reduce(
+  function (acc, v) return acc + v end,
+  0,
+  { 1, 2, 3 }
+)
+
+print(sum) -- prints 6
+lua
+local sum = utils
+  .reduce(function (acc, v) return acc + v end)(0)({ 5, 4, 3 })
+
+print(sum) -- prints 12
+map()
+This function creates a new array filled with the results of calling the provided map function on each element in the provided array.
+
+Parameters:
+fn: {function} The map function. It receives the current array element and key
+data: {table} The array to map
+Returns: A new array composed of the results of the map function
+Examples
+lua
+-- returns { "Odd", "Even", "Odd" }
+utils.map(
+  function (val, key)
+    return (val % 2 == 0 and "Even") or "Odd"
+  end,
+  { 3, 4, 7 }
+)
+lua
+-- returns { 4, 8, 12 }
+utils.map(function (val, key) return val * 2 end)({ 2, 4, 6 })
+filter()
+This function creates a new array from a portion of the original, only keeping the elements that passed a provided filter function's test.
+
+Parameters:
+fn: {function} The filter function. It receives the current array element and should return a boolean, deciding whether the element should be kept (true) or filtered out (false)
+data: {table} The array to filter
+Returns: The new filtered array
+Examples
+lua
+-- keeps even numbers
+utils.filter(
+  function (val) return val % 2 == 0 end,
+  { 3, 4, 7 }
+)
+lua
+-- keeps only numbers
+utils.filter(
+  function (val) return type(val) == "number" end,
+  { "hello", "world", 13, 44 }
+)
+find()
+This function returns the first element that matches in a provided function.
+
+Parameters:
+fn: {function} The find function that receives the current element and returns true if it matches, false if it doesn't
+t: {table} The array to find an element in
+Returns: The found element or nil if no element matched
+Examples
+lua
+local users = {
+  { name = "John", age = 50 },
+  { name = "Victor", age = 37 },
+  { name = "Maria", age = 33 }
+}
+
+-- returns the user "John"
+utils.find(
+  function (val) return user.name == "John" end,
+  users
+)
+lua
+-- returns the user "Maria"
+utils.find(function (val) return user.age == 33 end)(users)
+reverse()
+Transforms an array into reverse order.
+
+Parameters:
+data: {table} The array to reverse
+Returns: The original array in reverse order
+Example
+lua
+-- is: { 3, 2, 1 }
+utils.reverse({ 1, 2, 3 })
+includes()
+Determinates whether a value is part of an array.
+
+Parameters:
+val: {any} The element to check for
+t: {table} The array to check in
+Returns: A boolean indicating whether or not the provided value is part of the array
+Examples
+lua
+-- this is true
+utils.includes("John", { "Victor", "John", "Maria" })
+lua
+-- this is false
+utils.includes(4)({ 3, 5, 7 })
+keys()
+Returns the keys of a table.
+
+Parameters:
+table: {table} The table to get the keys for
+Returns: An array of keys
+Example
+lua
+-- returns { "hello", "name" }
+utils.keys({ hello = "world", name = "John" })
+values()
+Returns the values of a table.
+
+Parameters:
+table: {table} The table to get the values for
+Returns: An array of values
+Example
+lua
+-- returns { "world", "John" }
+utils.values({ hello = "world", name = "John" })
+propEq()
+Checks if a specified property of a table equals with the provided value.
+
+Parameters:
+propName: {string} The name of the property to compare
+value: {any} The value to compare to
+object: {table} The object to select the property from
+Returns: A boolean indicating whether the property value equals with the provided value or not
+Examples
+lua
+local user = { name = "John", age = 50 }
+
+-- returns true
+utils.propEq("age", 50, user)
+lua
+local user = { name = "Maria", age = 33 }
+
+-- returns false
+utils.propEq("age", 45, user)
+prop()
+Returns the property value that belongs to the property name provided from an object.
+
+Parameters:
+propName: {string} The name of the property to get
+object: {table} The object to select the property value from
+Returns: The property value or nil if it was not found
+Examples
+lua
+local user = { name = "Maria", age = 33 }
+
+-- returns "Maria"
+utils.prop("name", user)
+lua
+local user = { name = "John", age = 50 }
+
+-- returns 50
+utils.prop("age")(user)
+compose()
+This function allows you to chain multiple array mutations together and execute them in reverse order on the provided array.
+
+Parameters:
+...: {function[]} The array mutations
+v: {table} The object to execute the provided functions on
+Returns: The result from the provided mutations
+Examples
+lua
+-- returns 12
+utils.compose(
+  utils.reduce(function (acc, val) return acc + val end, 0),
+  utils.map(function (val) return val * 2 end)
+)({ 1, 2, 3 })
+
+Concepts
+ao has a lot of concepts built into the design, but the core concepts are very simple principles:
+
+Two core types: Messages and Processes
+No shared state, only Holographic State
+Decentralized Computer (Grid)
+Below is a set of concept documents that break down the ao system into its distinct parts.
+
+Specifications
+Processes
+Messages
+Units
+How messaging works
+
+ao Specs
+What is ao?
+The ao computer is the actor oriented machine that emerges from the network of nodes that adhere to its core data protocol, running on the Arweave network. This document gives a brief introduction to the protocol and its functionality, as well as its technical details, such that builders can create new implementations and services that integrate with it.
+
+The ao computer is a single, unified computing environment (a Single System Image), hosted on a heterogenous set of nodes in a distributed network. ao is designed to offer an environment in which an arbitrary number of parallel processes can be resident, coordinating through an open message passing layer. This message passing standard connects the machine's indepedently operating processes together into a 'web' -- in the same way that websites operate on independent servers but are conjoined into a cohesive, unified experience via hyperlinks.
+
+Learn More
+
+Messages
+The Message serves as the fundamental data protocol unit within ao, crafted from ANS-104 DataItems, thereby aligning with the native structure of Arweave. When engaged in a Process, a Message is structured as follows:
+
+lua
+{
+    Cron = false,
+    Data = "Hello aos",
+    Epoch = 0,
+    From = "5WzR7rJCuqCKEq02WUPhTjwnzllLjGu6SA7qhYpcKRs",
+    Id = "ayVo53qvZswpvxLlhMf8xmGjwxN0LGuHzzQpTLT0_do",
+    Nonce = 1,
+    Owner = "z1pq2WzmaYnfDwvEFgUZBj48anUsxxN64ZjbWOsIn08",
+    Signature = "...",
+    Tags = {
+        Type = "Message",
+        Variant = "ao.TN.1",
+        ["Data-Protocol"] = "ao",
+        ["From-Module"] = "lXfdCypsU3BpYTWvupgTioLoZAEOZL2_Ihcqepz6RiQ",
+        ["From-Process"] = "5WzR7rJCuqCKEq02WUPhTjwnzllLjGu6SA7qhYpcKRs"
+    },
+    Target = "5WzR7rJCuqCKEq02WUPhTjwnzllLjGu6SA7qhYpcKRs",
+    Timestamp = 1704936415711,
+    ["Block-Height"] = 1340762,
+    ["Forwarded-By"] = "z1pq2WzmaYnfDwvEFgUZBj48anUsxxN64ZjbWOsIn08",
+    ["Hash-Chain"] = "hJ0B-0yxKxeL3IIfaIIF7Yr6bFLG2vQayaF8G0EpjbY"
+}
+This architecture merges the Assignment Type with the Message Type, granting the Process a comprehensive understanding of the Message's context for effective processing.
+
+When sending a message, here is a visual diagram of how the messages travels through the ao computer.
+
+Message Workflow
+
+The message workflow initiates with the MU (Messenger Unit), where the message's signature is authenticated. Following this, the SU (Scheduler Unit) allocates an Epoch and Nonce to the message, bundles the message with an Assignment Type, and dispatches it to Arweave. Subsequently, the aoconnect library retrieves the outcome from the CU (Compute Unit). The CU then calls for all preceding messages leading up to the current Message Id from the SU (Scheduler Unit), processes them to deduce the result. Upon completion, the computed result is conveyed back to aoconnect, which is integrated within client interfaces such as aos.
+
+Summary
+Messages serve as the primary data protocol type for the ao network, leveraging ANS-104 Data-Items native to Arweave. Messages contain several fields including data content, origin, target, and cryptographic elements like signatures and nonces. They follow a journey starting at the Messenger Unit (MU), which ensures they are signed, through the Scheduler Unit (SU) that timestamps and sequences them, before being bundled and published to Arweave. The aoconnect library then reads the result from the Compute Unit (CU), which processes messages to calculate results and sends responses back through aoconnect, utilized by clients such as aos. The CU is the execution environment for these processes.
+
+Processes
+Processes possess the capability to engage in communication via message passing, both receiving and dispatching messages within the network. Additionally, they hold the potential to instantiate further processes, enhancing the network's computational fabric. This dynamic method of data dissemination and interaction within the network is referred to as a 'holographic state', underpinning the shared and persistent state of the network.
+
+Process-Diagram
+
+When building a Process with aos you have the ability to add handlers, these handlers can be added by calling the Handlers.add function, passing a "name", a "match" function, and a "handle" function.
+
+Handler Diagram
+
+The core module contains a helper library that gets injected into the handler function, this library is called ao.
+
+lua
+{
+    env = {
+        Process = {
+            Id = "5WzR7rJCuqCKEq02WUPhTjwnzllLjGu6SA7qhYpcKRs",
+            Owner = "_r9LpP4FtClpsGX3TOohubyaeb0IQTZZMcxQ24tTsGo",
+            Tags = {...}
+        },
+        Module = {
+            Id = "UAUszdznoUPQvXRbrFuIIH6J0N_LnJ1h4Trej28UgrE",
+            Owner = "_r9LpP4FtClpsGX3TOohubyaeb0IQTZZMcxQ24tTsGo",
+            Tags = {..}
+        }
+    },
+    id = "5WzR7rJCuqCKEq02WUPhTjwnzllLjGu6SA7qhYpcKRs",
+    isTrusted = "function: 0x5468d0",
+    result = "function: 0x547120",
+    send = "function: 0x547618",
+    spawn = "function: 0x5468b0"
+}
+The main functions to look at in this ao helper is
+
+ao.send(Message) - sends a message to a process
+ao.spawn(Module, Message) - creates a new process
+ao.send Example
+lua
+ao.send({
+    Target = Chatroom,
+    Action = "Broadcast",
+    Data = "Hello from my Process!"
+})
+ao.spawn Example
+lua
+ao.spawn(ao.env.Module.Id, {
+    ["Memory-Limit"] = "500-mb",
+    ["Compute-Limit"] = "900000000000000000"
+})
+ao.env
+NOTE: ao.env is important context data that you may need as a developer creating processes.
+
+The ao.env property contains the Process and Module Reference Objects
+
+lua
+env = {
+    Process = {
+        Id = "5WzR7rJCuqCKEq02WUPhTjwnzllLjGu6SA7qhYpcKRs",
+        Owner = "_r9LpP4FtClpsGX3TOohubyaeb0IQTZZMcxQ24tTsGo",
+        Tags = {...}
+    },
+    Module = {
+        Id = "UAUszdznoUPQvXRbrFuIIH6J0N_LnJ1h4Trej28UgrE",
+        Owner = "_r9LpP4FtClpsGX3TOohubyaeb0IQTZZMcxQ24tTsGo",
+        Tags = {..}
+    }
+}
+Both the Process and the Module contain the attributes of the ao Data-Protocol.
+
+Summary
+Processes in the network communicate through message passing and can create new processes, contributing to a 'holographic state' of shared and persistent data. Developers can build a Process using aos by adding handlers through the Handlers.add function with specific name, match, and handle functions. The ao helper library within the core module aids in this process, providing functions like ao.send to dispatch messages and ao.spawn to create new modules, as well as the important ao.env property which contains essential Process and Module information. The ao Data-Protocol outlines the structure and attributes of these elements.
+
+Units
+What is a Unit?
+The ao Computer is composed of three Unit types, each type contains a set of responsibilities for the computer. And each Unit is horizontally scalable.
+
+In ao we have the Messager Unit or MU, and the Scheduler Unit or SU, and the Compute Unit or the CU. These units are the building blocks of the ao Computer Grid. There can be 1 or more of these units on the network and they work together to power the ao Operating System or aos.
+
+MU
+
+Messager Unit - This unit is the front door to ao, it receives all the messages from the outside and as well as directs traffic flow for Processes. This traffic flow we call pushing. Each process can return an Outbox when it evaluates a Message, and this Outbox can be filled with Messages or requests to Spawn new processes, and the Messenger Unit is responsible for extracting these Messages from the Outbox and signing them and sending them to the Scheduler Units for processing.
+SU Diagram
+
+Scheduler Unit - The Scheduler unit is responsible for ordering the messages, and storing those messages on Arweave. It is important that every message is appropriately ordered so that the evaluation can be replayed and verified. The Scheduler Unit is responsible for this process. It provides the abilty to query it via an endpoint to get the order of messages for evaluation.
+CU Diagram
+
+Compute Unit - The Compute unit is responsible for compute, this unit loads the binary module and manages the memory of that module, so that the execution of the process is alway running on the most up to date memory. The compute unit provides the results of the evaluation back to the the messenger unit, which can then push any messages in the outbox of the given process.
+Summary
+The ao Computer consists of three scalable unit types—Messager Unit (MU), Scheduler Unit (SU), and Compute Unit (CU)—which form the foundation of the ao Computer. These units can exist in multiples on the network and collectively operate the ao Operating System (aos).
+
+The MU acts as the entry point, receiving external messages and managing process communications. It processes outgoing messages and spawn requests from process outboxes and forwards them to the SU.
+
+The SU ensures messages are properly sequenced and stored on Arweave, maintaining order for consistent replay and verification of message evaluations.
+
+The CU handles computation, loading binary modules, and managing memory to ensure processes run with current data. It then returns the evaluation results to the MU for further message handling.
+
+How ao messaging works
+Before we dive in to ao, I want to share with you a little information about unix. Unix is a powerful operating system, but in its design it is focused on two Principal "Types". Files and Programs. A File is data and a program is logic, when you combine the two you get information.
+
+Input.file | TransformProgram | Output.file
+
+You may have done something like this on the command line without knowing what you are doing. Being able to connect files to programs and return files which can then be passed to other programs creates a complex system composed of simple applications. This is a very powerful idea.
+
+Now, lets talk about ao the hyper parallel computer, and lets change the idea of a File to the ao concept of a Message and the idea of a Program to the ao concept of a Process. The ao computer takes messages and sends them to Processes in which those Processes can output messages that can be sent to other Processes. The result is a complex system built on simple modular logic containers.
+
+MessageA | Process | MessageB
+
+ao-messages
+
+Here is a description of the process as outlined in the flowchart:
+
+A message is initiated from an ao Connect. This message is sent to the mu service using a POST request. The body of the request contains data following a protocol, labeled 'ao', and is of the type 'Message'.
+
+The mu service processes the POST request and forwards the message to the su service. This is also done using a POST request with the same data protocol and message type.
+
+The su service stores the assignment and message on Arweave.
+
+A GET request is made to the cu service to retrieve result based on a message ID. The cu is a service that evaluates messages on processes and can return result based on an individual message identifier.
+
+A GET request is made to the su service to retrieve the assignment and message. This request is looking for messages from a process ID, within a range of time from a start (from the last evaluation point) to (to the current messageId).
+
+The final step is to push any outbox Messages. It involves reviewing the messages and spawns in the Result Object. Based on the outcome of this check, the steps 2, 3, and 4 may be repeated for each relevant message or spawn.
+
+A whistle stop tour of Lua.
+Before we can explore ao in greater depth, let's take a moment to learn the basics of Lua: your companion for commanding aos processes.
+
+Lua is a simple language with few surprises. If you know Javascript, it will feel like a simplified, purer version. If you are learning from-scratch, it will seem like a tiny language that focuses on the important stuff: Clean computation with sane syntax.
+
+In this section we will cover the basics of Lua in just a few minutes. If you already know Lua, jump right through to the next chapter
+
+Jumping back into your aos process.
+For the purpose of this tutorial, we will be assuming that you have already completed the getting started guide. If not, complete that first.
+
+If you logged out of your process, you can always re-open it by running aos on your commandline, optionally specifying your key file with --wallet [location].
+
+Basic Lua expressions.
+In the remainder of this primer we will quickly run through Lua's core features and syntax.
+
+Try out on the examples on your aos process as you go, or skip them if they are intuitive to you.
+
+Basic arithmetic: Try some basic arithmetic, like 5 + 3. After processing, you will see the result 8. +, -, *, /, and ^ all work as you might expect. % is the symbol that Lua uses for modulus.
+
+Setting variables: Type a = 10 and press enter. This sets the variable a to 10. By convention (not enforced by the language), global variables start with a capital letter in Lua (for example Handlers).
+
+Using variables: Now type a * 2. You will see 20returned on the command line.
+
+String concatenation: Say hello to yourself by executing "Hello, " .. ao.id.
+
+Experimenting with conditional statements.
+If-Else: Like most programming languages, Lua uses if-else blocks to conditionally execute code.
+
+In your aos process, type .editor and press enter. This will open an in-line text editor within your command-line interface.
+
+lua
+aos_coolness = 9001
+if aos_coolness > 9000 then
+    return "aos is coolness is over 9000!"
+else
+    return "Oh. 🤷"
+end
+Once you are finished editing on your terminal, type .done on a new line and press enter. This will terminate edit mode and submit the expression to your process for evaluation.
+
+As a result, you will see that aos is >9,000 cool. Good to know.
+
+if statements in Lua can also have additional elseif [condition] then blocks, making conditional execution hierarchies easier.
+
+Looping in Lua.
+There are a few different ways to loop in your code in Lua. Here are our favorites:
+
+While loops:
+
+Start by initalizing your counter to zero by typing n = 0 and pressing enter.
+
+Then open the inline editor again with .editor .
+
+lua
+while n < 5 do
+  n = n + 1
+end
+Type .done on a new line to execute the while loop. You can check the result of the loop by simply running n.
+
+For loops:
+
+Lua can also execute python-style for loops between a set of values. For example, use the .editor to enter the following code block:
+
+lua
+for m = 1, 100 do
+        n = n + m
+end
+Request the new value of the variable by running n again.
+
+Getting functional.
+Define a function:
+
+Using the .editor once again, submit the following lines:
+
+lua
+function greeting(name)
+    return "Hello, " .. name
+end
+Once submitted, aos will return undefined, as function (and variable) definition in Lua doesn't return a value.
+
+Lua also has 'anonymous' or 'higher order' functions. These essentially allow you to use functions themselves as if they are normal data -- to be passed as arguments to other functions, etc. The following example defines an anonymous function and is equivalent to the above:
+
+lua
+greeting =
+		function(name)
+    	return "Hello, " .. name
+		end
+Calling the function: Call the function with greeting("Earthling"). aos will return "Hello, Earthling".
+
+Defining deep objects with tables.
+Tables are Lua's only compound data structure. They map keys to values, but can also be used like traditional arrays.
+
+Create a simple table: Type ao_is = {"hyper", "parallel", "compute"}to create a simple table.
+Accessing the table's elements: Access an element with ao_is[2]. aos will return parallel. Note: Indices in Lua start from 1!
+Count a table's elements: The size of a table in Lua is found with the operator #. For example, running #ao_is will return 3.
+Set a named element: Type ao_is["cool"] = true to add a new named key to the table. Named elements can also be accessed with the . operator, for example ao_is.cool.
+Lua Wats.
+aos uses Lua because it is a simple, clean language that most experienced programmers can learn very quickly, and is an increasingly popular first programming language, too, thanks to its use in video games like Roblox.
+
+Nonetheless, there are a few things about the language that are prone to trip up rookie Lua builders. Tastes may vary, but here is our exhaustive list of Lua wats:
+
+Remember: Table indexing starts from 1 not 0!
+Remember: 'Not equals' is expressed with ~=, rather than != or similar.
+Remember: Objects in Lua are called 'tables', rather than their more common names.
+Let's go!
+With this in mind, you now know everything you need in order to build awesome decentralized processes with Lua! In the next chapter we will begin to build parallel processes with Lua and aos.
+
+aos Brief Tour
+Welcome to a quick tour of aos! This tutorial will walk you through the key global functions and variables available in the aos environment, giving you a foundational understanding of how to interact with and utilize aos effectively.
+
+1. Introduction to Inbox
+What It Is: Inbox is a Lua table that stores all messages received by your process but not yet handled.
+How to Use: Check Inbox to see incoming messages. Iterate through Inbox[x] to process these messages.
+2. Sending Messages with Send(Message)
+Functionality: Send(Message) is a global function to send messages to other processes.
+Usage Example: Send({Target = "...", Data = "Hello, Process!"}) sends a message with the data "Hello, Process!" to a specified process.
+3. Creating Processes with Spawn(Module, Message)
+Purpose: Use Spawn(Module, Message) to create new processes.
+Example: Spawn("MyModule", {Data = "Start"}) starts a new process using "MyModule" with the provided message.
+4. Understanding Name and Owner
+Name: A string set during initialization, representing the process's name.
+Owner: Indicates the owner of the process. Changing this might restrict your ability to interact with your process.
+Important Note: Treat these as read-only to avoid issues.
+5. Utilizing Handlers
+What They Are: Handlers is a table of helper functions for creating message handlers.
+Usage: Define handlers in Handlers to specify actions for different incoming messages based on pattern matching.
+6. Data Representation with Dump
+Function: Dump converts any Lua table into a print-friendly format.
+How to Use: Useful for debugging or viewing complex table structures. Example: Dump(Inbox) prints the contents of Inbox.
+7. Leveraging Utils Module
+Contents: Utils contains a collection of functional utilities likemap, reduce, and filter.
+
+Usage: Great for data manipulation and functional programming patterns in Lua. For example, Utils.map(myTable, function(x) return x * 2 end) to double the values in a table.
+
+8. Exploring the ao Core Library
+Description: ao is a core module that includes key functions for message handling and process management.
+Key Features: Includes functions for sending messages (send) and spawning processes (spawn), along with environment variables.
+Conclusion
+This brief tour introduces you to the primary globals and functionalities within the aos environment. With these tools at your disposal, you can create and manage processes, handle messages, and utilize Lua's capabilities to build efficient and responsive applications on the aos platform. Experiment with these features to get a deeper understanding and to see how they can be integrated into your specific use cases. Happy coding in aos!
+
+Meet Lua
+Understanding Lua
+Background: Lua is a lightweight, high-level, multi-paradigm programming language designed primarily for embedded systems and clients. It's known for its efficiency, simplicity, and flexibility.
+Key Features: Lua offers powerful data description constructs, dynamic typing, efficient memory management, and good support for object-oriented programming.
+Setting Up
+Installation: Visit Lua's official website to download and install Lua.
+Environment: You can use a simple text editor and command line, or an IDE like ZeroBrane Studio or Eclipse with a Lua plugin.
+Basic Syntax and Concepts (in aOS)
+Hello World:
+lua
+"Hello, World!"
+Variables and Types: Lua is dynamically typed. Basic types include nil, boolean, number, string, function, userdata, thread, and table.
+Control Structures: Includes if, while, repeat...until, and for.
+Functions: First-class citizens in Lua, supporting closures and higher-order functions.
+Tables: The only data structuring mechanism in Lua, which can be used to represent arrays, sets, records, etc.
+Hands-On Practice
+Experiment with Lua's Interactive Mode: Run aos in your terminal and start experimenting with Lua commands.
+Write Simple Scripts: Create .lua files and run them using the Lua interpreter. Use .load file.lua feature to upload lua code on your aos process.
+Resources
+Official Documentation: Lua 5.3 Reference Manual
+Online Tutorials: Websites like Learn Lua are great for interactive learning.
+Books: "Programming in Lua" (first edition available online) is a comprehensive resource.
+Community: Join forums or communities like Lua Users for support and discussions.
+Best Practices
+Keep It Simple: Lua is designed to be simple and flexible. Embrace this philosophy in your code.
+Performance: Learn about Lua's garbage collection and efficient use of tables.
+Integration: Consider how Lua can be embedded into other applications, particularly C/C++ projects.
+Conclusion
+Lua is a powerful language, especially in the context of embedded systems and game development. Its simplicity and efficiency make it a great choice for specific use cases. Enjoy your journey into Lua programming!
+
+Meet Web Assembly
+WebAssembly (often abbreviated as Wasm) is a modern binary instruction format providing a portable compilation target for high-level languages like C, C++, and Rust. It enables deployment on the web for client and server applications, offering a high level of performance and efficiency. WebAssembly is designed to maintain the security and sandboxing features of web browsers, making it a suitable choice for web-based applications. It's a key technology for web developers, allowing them to write code in multiple languages and compile it into bytecode that runs in the browser at near-native speed.
+
+The significance of WebAssembly lies in its ability to bridge the gap between web and native applications. It allows complex applications and games, previously limited to desktop environments, to run in the browser with comparable performance. This opens up new possibilities for web development, including the creation of high-performance web apps, games, and even the porting of existing desktop applications to the web. WebAssembly operates alongside JavaScript, complementing it by enabling performance-critical components to be written in languages better suited for such tasks, thereby enhancing the capabilities and performance of web applications.
+
+ao Module
+version: 0.0.3
+
+ao process communication is handled by messages, each process receives messages in the form of ANS-104 DataItems, and needs to be able to do the following common operations.
+
+isTrusted(msg) - check to see if this message trusted?
+send(msg) - send message to another process
+spawn(module, msg) - spawn a process
+The goal of this library is to provide this core functionality in the box of the ao developer toolkit. As a developer you have the option to leverage this library or not, but it integrated by default.
+
+Properties
+Name	Description	Type
+id	Process Identifier (TXID)	string
+_module	Module Identifier (TXID)	string
+authorities	Set of Trusted TXs	string
+_version	The version of the library	string
+env	Evaluation Environment	string
+outbox	Holds Messages and Spawns for response	object
+Methods
+send(msg: Message<table>) : Message<table>
+The send function takes a Message object or partial message object, it adds additional ao specific tags to the object and returns a full Message object, as well as insert into the ao.outbox.Messages table.
+
+parameters
+
+msg
+Schema
+
+json
+{
+    "type": "object",
+    "properties": {
+        "Target": {
+            "type": "string",
+            "description": "Process/Wallet to send message to"
+        },
+        "Data": {
+            "type": "any",
+            "description": "data to send in message DataItem"
+        },
+        "Tags": {
+            "type": "object or array<name,value>"
+            "description": "This property can be an array of name,value objects or an object"
+        }
+    }
+}
+Example 1
+
+lua
+local message = ao.send({
+    Target = msg.From,
+    Data = "ping",
+    Tags = {
+        {
+            name = "Content-Type",
+            value = "text/plain"
+        }
+    }
+})
+Example 2
+
+lua
+local message = ao.send({
+    Target = msg.From,
+    Data = "ping",
+    Tags = {
+        "Content-Type" = "text/plain"
+    }
+})
+returns
+
+Schema
+
+json
+{
+    "type": "object",
+    "properties": {
+        "Target": {
+            "type": "string"
+        },
+        "Data": {
+            "type": "any"
+        },
+        "Tags": {
+            "type": "array"
+            "description": "name/value array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "value":{"type":"string"}
+                }
+            }
+        }
+    }
+}
+spawn(module : string, spawn : Spawn<table>) : Spawn<table>
+The spawn function takes a module TXID as the first argument and a full or parital Spawn table. The result will return a full Spawn table. The spawn function will also generate a Ref_ tag with a unique reference identifier.
+
+parameters
+
+Name	Description	Type
+module	The TXID that identifies the module binary to use to instaniate the process with	string
+spawn	The spawn full or parital table object that contains the Data and Tags properties	table
+Schema
+
+module
+
+json
+{
+  "type": "string"
+}
+spawn
+
+json
+{
+  "type": "object",
+  "properties": {
+    "Data": { "type": "any" },
+    "Tags": {
+      "type": "object or array",
+      "description": "can be either <name,value> array, or object"
+    }
+  }
+}
+returns
+
+Schema
+
+json
+{
+  "type": "object",
+  "properties": {
+    "Data": { "type": "any" },
+    "Tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "value": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+isTrusted(msg : Message<table>) : boolean
+When spawning a process, 0 or more Authority Tags can be supplied, the ao library adds each of these values to a table array on the ao properties called authorities. This set provides the Proof of Authority feature for ao.TN.1. When a message arrives in the handle function, the developer can call ao.isTrusted to verify if the message is from a trusted source.
+
+parameters
+
+Name	Description	Type
+msg	Message to check if trusted by this process	table
+Schema
+
+json
+{
+    "type": "object",
+    "properties": {
+        "Target": {
+            "type": "string"
+        },
+        "Data": {
+            "type": "any"
+        },
+        "Tags": {
+            "type": "array"
+            "description": "name/value array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "value":{"type":"string"}
+                }
+            }
+        }
+    }
+}
+
+Handlers (Version 0.0.3)
+Overview
+The Handlers library provides a flexible way to manage and execute a series of handlers based on patterns. Each handler consists of a pattern function, a handle function, and a name. This library is suitable for scenarios where different actions need to be taken based on varying input criteria.
+
+Module Structure
+Handlers._version: String representing the version of the Handlers library.
+Handlers.list: Table storing the list of registered handlers.
+Functions
+Handlers.add(name, pattern, handler)
+adds a new handler or updates an existing handler by name
+
+Handlers.append(name, pattern, handle)
+Appends a new handler to the end of the handlers list.
+
+Parameters
+pattern (function): Function that determines if the handler should be executed.
+handle (function): The handler function to execute.
+name (string): A unique name for the handler.
+Handlers.prepend(name, pattern, handle)
+Prepends a new handler to the beginning of the handlers list.
+
+Parameters
+Same as handlers.append.
+Handlers.before(handleName)
+Returns an object that allows adding a new handler before a specified handler.
+
+Parameters
+handleName (string): The name of the handler before which the new handler will be added.
+Returns
+An object with an add method to insert the new handler.
+Handlers.after(handleName)
+Returns an object that allows adding a new handler after a specified handler.
+
+Parameters
+handleName (string): The name of the handler after which the new handler will be added.
+Returns
+An object with an add method to insert the new handler.
+Handlers.remove(name)
+Removes a handler from the handlers list by name.
+
+Parameters
+name (string): The name of the handler to be removed.
+Handlers.evaluate(msg, env)
+Evaluates each handler against a given message and environment. Handlers are called in the order they appear in the handlers list.
+
+Parameters
+msg (table): The message to be processed by the handlers.
+env (table): The environment in which the handlers are executed.
+Returns
+response (varies): The response from the handler(s). Returns a default message if no handler matches.
+Usage Example
+lua
+-- Define pattern and handle functions
+local function myPattern(msg)
+    -- Determine if the handler should be executed
+end
+
+local function myHandle(msg, env, response)
+    -- Handler logic
+end
+
+-- Add a new handler
+Handlers.add("myHandler", myPattern, myHandle)
+
+-- Evaluate a message
+local response = handlers.evaluate({ key = "value" }, { envKey = "envValue" })
+Notes
+Handlers are executed in the order they appear in handlers.list.
+The pattern function should return 0 to skip the handler, -1 to break after the handler is executed, or 1 to continue with the next handler.
+The evaluate function can concatenate responses from multiple handlers.
+Handlers.utils
+The Handlers.utils module provides two functions that are common matching patterns and one function that is a common handle function.
+
+hasMatchingData(data)
+hasMatchingTag(name, value)
+reply(txt)
+Handlers.utils.hasMatchingData(data : string)
+This helper returns a function that requires a message argument, so you can drop this into the pattern argument of any handler. The function compares the data on the incoming message with the string provided as an argument.
+
+lua
+Handlers.add("ping",
+    Handlers.utils.hasMatchingData("ping"),
+    ...
+)
+If a message comes into the process with data set to ping, this handler will match on it and invoke the handle function.
+
+Handlers.hasMatchingTag(name : string, value : string)
+This helper returns a function that requires a message argument, so you can drop this into any pattern argument on the Handlers module. The function compares the Tag Name and Value, if they are equal then it invokes the handle function.
+
+lua
+Handlers.add("ping",
+    Handlers.utils.hasMatchingData("ping"),
+    ...
+)
+Handlers.reply(text : string)
+This helper is a simple handle function, it basically places the text value in to the Data property of the outbound message.
+
+lua
+Handlers.add("ping",
+    Handlers.utils.hasMatchingData("ping"),
+    Handlers.utils.reply("pong")
+)
+
+ao Token and Subledger Specification
+Status: DRAFT-1 Targeting Network: ao.TN.1
+
+This specification describes the necessary message handlers and functionality required for a standard ao token process. Implementations of this standard typically offer users the ability to control a transferrable asset, whose scarcity is maintained by the process.
+
+Each compliant process will likely implement a ledger of balances in order to encode ownership of the asset that the process represents. Compliant processes have a set of methods that allow for the modification of this ledger, typically with safe-guards to ensure the scarcity of ownership of the token represented by the process.
+
+Additionally, this specification describes a 'subledger' process type which, when implemented, offers the ability to split move a number of the tokens from the parent into a child process that implements the same token interface specification. If the From-Module of the subledger process is trusted by the participants, these subledgers can be used to transact in the 'source' token, without directly exchanging messages with it. This allows participants to use the tokens from a process, even if that process is congested. Optionally, if the participants trust the Module a subledger process is running, they are able to treat balances across these processes as fungible. The result of this is that an arbitrary numbers of parallel processes -- and thus, transactions -- can be processed by a single token at any one time.
+
+Token Processes
+A specification-compliant token process responds to a number of different forms of messages, with each form specified in an Action tag. The full set of Action messages that the token must support are as follows:
+
+Name	Description	Read-Only
+Balance	get the balance of an identifer	✔️
+Balances	get a list of all ledger/account balances	✔️
+Transfer	send 1 or more units from the callers balance to one or move targets with the option to notify targets	❌
+Mint	if the ledger process is the root and you would like to increase token supply	❌
+In the remainder of this section the tags necessary to spawn a compliant token process, along with the form of each of the Action messages and their results is described.
+
+Spawning Parameters
+Every compliant token process must carry the following immutable parameters upon its spawning message:
+
+Tag	Description	Optional?
+Name	The title of the token, as it should be displayed to users.	✔️
+Ticker	A suggested shortened name for the token, such that it can be referenced quickly.	✔️
+Logo	An image that applications may deserire to show next to the token, in order to make it quickly visually identifiable.	✔️
+Denomination	The number of the token that should be treated as a single unit when quantities and balances are displayed to users.	❌
+Messaging Protocol
+Balance(Target? : string)
+Returns the balance of a target, if a target is not supplied then the balance of the sender of the message must be returned.
+
+Example Action message:
+
+lua
+send({
+    Target = "{TokenProcess Identifier}",
+    Tags = {
+        Action = "Balance",
+        Target = "{IDENTIFIER}"
+    }
+})
+Example response message:
+
+
+{
+    Tags = {
+        Balance = "50",
+        Target = "LcldyO8wwiGDzC3iXzGofdO8JdR4S1_2A6Qtz-o33-0",
+        Ticker = "FUN"
+    }
+}
+Balances()
+Returns the balance of all participants in the token.
+
+lua
+send({
+    Target = "[TokenProcess Identifier]",
+    Tags = {
+        Action = "Balances",
+        Limit = 1000, # TODO: Is this necessary if the user is paying for the compute and response?
+        Cursor? = "BalanceIdentifer"
+    }
+})
+Example response message:
+
+lua
+{
+    Data = {
+        "MV8B3MAKTsUOqyCzQ0Tsa2AR3TiWTBU1Dx0xM4MO-f4": 100,
+        "LcldyO8wwiGDzC3iXzGofdO8JdR4S1_2A6Qtz-o33-0": 50
+    }
+}
+Transfer(Target, Quantity)
+If the sender has a sufficient balance, send the Quantity to the Target, issuing a Credit-Notice to the recipient and a Debit-Notice to the sender. The Credit- and Debit-Notice should forward any and all tags from the original Transfer message with the X- prefix. If the sender has an insufficient balance, fail and notify the sender.
+
+lua
+send({
+    Target = "[TokenProcess Identifier]",
+    Tags = {
+        { name = "Action", value = "Transfer" },
+        { name = "Recipient", value = "[ADDRESS]" },
+        { name = "Quantity", value = "100" },
+        { name = "X-[Forwarded Tag(s) Name]", value= "[VALUE]" }
+    }
+})
+If a successful transfer occurs a notification message should be sent if Cast is not set.
+
+lua
+ao.send({
+    Target = "[Recipient Address]",
+    Tags = {
+        { name = "Action", value = "Credit-Notice" },
+        { name = "Sender", value = "[ADDRESS]" },
+        { name = "Quantity", value = "100"},
+        { name = "X-[Forwarded Tag(s) Name]", value= "[VALUE]" }
+    }
+})
+Recipients will infer from the From-Process tag of the message which tokens they have received.
+
+Get-Info()
+lua
+send({
+    Target = "{Token}",
+    Tags = {
+        Action = "Info"
+    }
+})
+Mint() [optional]
+Implementing a Mint action gives the process a way of allowing valid participants to create new tokens.
+
+lua
+send({
+    Target ="{Token Process}",
+    Tags = {
+        Action = "Mint",
+        Quantity = "1000"
+    }
+})
+Subledger Processes
+In order to function appropriately, subledgers must implement the full messaging protocol of token contracts (excluding the Mint action). Subledgers must also implement additional features and spawn parameters for their processes. These modifications are described in the following section.
+
+Spawning Parameters
+Every compliant subledger process must carry the following immutable parameters upon its spawning message:
+
+Tag	Description	Optional?
+Source-Token	The ID of the top-most process that this subledger represents.	❌
+Parent-Token	The ID of the parent process that this subledger is attached to.	❌
+Credit-Notice Handler
+Upon receipt of a Credit-Notice message, a compliant subledger process must check if the process in question is the Parent-Token. If it is, the subledger must increase the balance of the Sender by the specified quantity.
+
+Transfer(Target, Quantity)
+In addition to the normal tags that are passed in the Credit-Notice message to the recipient of tokens, a compliant subledger process must also provide both of the Source-Token and Parent-Token values. This allows the recipient of the Transfer message -- if they trust the Module of the subledger process -- to credit a receipt that is analogous (fungible with) deposits from the Source-Token.
+
+The modified Credit-Notice should be structured as follows:
+
+lua
+ao.send({
+    Target = "[Recipient Address]",
+    Tags = {
+        { name = "Action", value = "Credit-Notice" },
+        { name = "Quantity", value = "100"},
+        { name = "Source-Token", value = "[ADDRESS]" },
+        { name = "Parent-Token", value = "[ADDRESS]" },
+        { name = "X-[Forwarded Tag(s) Name]", value= "[VALUE]" }
+    }
+})
+Withdraw(Target?, Quantity)
+All subledgers must allow balance holders to withdraw their tokens to the parent ledger. Upon receipt of an Action: Withdraw message, the subledger must send an Action message to its Parent-Ledger, transferring the requested tokens to the caller's address, while debiting their account locally. This transfer will result in a Credit-Notice from the Parent-Ledger for the caller.
+
+lua
+send({
+    Target = "[TokenProcess Identifier]",
+    Tags = {
+     { name = "Action", value = "Withdraw" },
+     { name = "Recipient", value = "[ADDRESS]" },
+     { name = "Quantity", value = "100" }
+    }
+})
+Token Example
+NOTE: When implementing a token it is important to remember that all Tags on a message MUST be "string"s. Using thetostring function you can convert simple types to strings.
+
+lua
+if not balances then
+  balances = { [ao.id] = 100000000000000 }
+end
+
+if name ~= "Fun Coin" then
+  name = "Fun Coin"
+end
+
+if ticker ~= "Fun" then
+  ticker = "fun"
+end
+
+if denomination ~= 6 then
+  denomination = 6
+end
+
+-- handlers that handler incoming msg
+handlers.add(
+  "transfer",
+  handlers.utils.hasMatchingTag("Action", "Transfer"),
+  function (msg)
+    assert(type(msg.Tags.Recipient) == 'string', 'Recipient is required!')
+    assert(type(msg.Tags.Quantity) == 'string', 'Quantity is required!')
+
+    if not balances[msg.From] then
+      balances[msg.From] = 0
+    end
+
+    if not balances[msg.Tags.Recipient] then
+      balances[msg.Tags.Recipient] = 0
+    end
+
+    local qty = tonumber(msg.Tags.Quantity)
+    assert(type(qty) == 'number', 'qty must be number')
+    -- handlers.utils.reply("Transfering qty")(msg)
+    if balances[msg.From] >= qty then
+      balances[msg.From] = balances[msg.From] - qty
+      balances[msg.Tags.Recipient] = balances[msg.Tags.Recipient] + qty
+      ao.send({
+        Target = msg.From,
+        Tags = {
+          Action = "Debit-Notice",
+          Quantity = tostring(qty)
+        }
+      })
+      ao.send({
+      Target = msg.Tags.Recipient,
+      Tags = {
+        Action = "Credit-Notice",
+        Quantity = tostring(qty)
+      }})
+      -- if msg.Tags.Cast and msg.Tags.Cast == "true" then
+      --   return
+      -- end
+
+    end
+  end
+)
+
+handlers.add(
+  "balance",
+  handlers.utils.hasMatchingTag("Action", "Balance"),
+  function (msg)
+    assert(type(msg.Tags.Target) == "string", "Target Tag is required!")
+    local bal = "0"
+    if balances[msg.Tags.Target] then
+      bal = tostring(balances[msg.Tags.Target])
+    end
+    ao.send({Target = msg.From, Tags = {
+      Target = msg.From,
+      Balance = bal,
+      Ticker = ticker or ""
+    }})
+  end
+)
+
+local json = require("json")
+
+handlers.add(
+  "balances",
+  handlers.utils.hasMatchingTag("Action", "Balances"),
+  function (msg)
+    ao.send({
+      Target = msg.From,
+      Data = json.encode(balances)
+    })
+  end
+
+)
+
+handlers.add(
+  "info",
+  handlers.utils.hasMatchingTag("Action", "Info"),
+  function (msg)
+    ao.send({Target = msg.From, Tags = {
+      Name = name,
+      Ticker = ticker,
+      Denomination = tostring(denomination)
+    }})
+  end
+)
+
+Accessing Data from Arweave with ao
+There may be times in your ao development workflow that you want to access data from arweave. With ao your process can send an assignment instructing the network to provide that data to your Process.
+
+In order, to request data from arweave, you simply call Assign with a list of processes you would like to assign the data to, and a Message which is the txid of a Message.
+
+lua
+
+Assign({
+  Processes = { ao.id },
+  Message = 'message-id'
+})
+You can also call Send with a table of process ids in the Assignments parameter. This will tell the network to generate the Message and then assign it to all the process ids in the Assignments list.
+
+lua
+Send({
+  Target = ao.id,
+  Data = 'Hello World',
+  Assignments = { 'process-id-1', 'process-id-2' }
+})
+Why data from Arweave?
+Your Process may need to access data from a message to make a decision about something, or you may want to add features to your Process via the data load feature. Or you may want to access a Message from a process without replicating the entire message.
+
+Cron Messages
+ao has the ability to generate messages on a specified interval, this interval could be seconds, minutes, hours, or blocks. These messages automatically get evaluated by a monitoring process to inform the Process to evalute these messages over time. The result is a real-time Process that can communicate with the full ao network or oracles in the outside network.
+
+Setting up cron in a process
+The easiest way to create these cron messages is by spawning a new process in the aos console and defining the time interval.
+
+sh
+aos [myProcess] --cron 5-minutes
+When spawning a new process, you can pass a cron argument in your command-line followed by the interval you would like the cron to tick. If you want the messages to trigger in real-time you must initiate a monitor event. In aos, you simply call .monitor and it will kick off a worker process on the mu that triggers the cron messages from the cu. Then your Process will receive the cron messages every x-interval.
+
+lua
+.monitor
+If you wish to stop triggering the cron messages simply call .unmonitor and this will stop the triggering process, but the next time you send a message, the generated cron messages will still get created and processed.
+
+Handling cron messages
+Every cron message has an Action tag with the value Cron. Handlers can be defined to perform specific tasks autonomously, each time a cron message is received.
+
+lua
+Handlers.add(
+  "CronTick", -- handler name
+  Handlers.utils.hasMatchingTag("Action", "Cron"), -- handler pattern to identify cron message
+  function () -- handler task to execute on cron message
+    -- do something
+  end
+)
+Cron messages are a powerful utility that can be used to create "autonomous agents" with expansive capabilities.
+
+Editor setup
+Remembering all the built in ao functions and utilites can sometimes be hard. To enhance your developer experience, it is recommended to install the Lua Language Server extension into your favorite text editor and add the ao addon. It supports all built in aos modules and globals.
+
+VS Code
+Install the sumneko.lua extension:
+
+Search for "Lua" by sumneko in the extension marketplace
+Download and install the extension
+Open the VS Code command palette with Shift + Command + P (Mac) / Ctrl + Shift + P (Windows/Linux) and run the following command:
+
+> Lua: Open Addon Manager
+Open a workspace first. In the Addon Manager, search for "ao", it should be the first result. Click "Enable" and enjoy autcomplete!
+If you don't want to do this process for each of your workspaces, you can copy the Lua.workspace.library object from the generated workspace settings.json file to your global settings.json file.
+
+Other editors
+Verify that your editor supports the language server protocol
+Install Lua Language Server by following the instructions at luals.github.io
+Install the "ao" addon to the language server
+
